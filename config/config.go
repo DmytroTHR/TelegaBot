@@ -7,6 +7,8 @@ import (
 	"github.com/DmytroTHR/telegabot/pkg/helpers"
 )
 
+var log = helpers.Logger()
+
 type Config struct {
 	apiToken string
 	apiHost  string
@@ -31,5 +33,6 @@ func NewConfig(host, token string) (*Config, error) {
 }
 
 func (conf *Config) FullAPIPath(method string) (*url.URL, error) {
+	log.Println("Prepare to make request on:", method)
 	return url.Parse(fmt.Sprintf("%sbot%s/%s", conf.apiHost, conf.apiToken, method))
 }

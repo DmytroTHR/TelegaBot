@@ -30,13 +30,14 @@ func ReadFromRequest(addr *url.URL, httpMethod, body string) ([]byte, error) {
 	var res *http.Response
 	var err error
 
+	log.Println("Requesting on API")
 	switch httpMethod {
 	case http.MethodGet:
 		res, err = http.Get(addr.String())
 	case http.MethodPost:
 		res, err = http.Post(addr.String(), DefaultContentType, strings.NewReader(body))
 	default:
-		return nil, fmt.Errorf("%s method is not allowed on %s", httpMethod, addr.String())
+		return nil, fmt.Errorf("%s method is not allowed", httpMethod)
 	}
 
 	if err != nil {
@@ -44,13 +45,13 @@ func ReadFromRequest(addr *url.URL, httpMethod, body string) ([]byte, error) {
 			log.Warnln("BODY:\t", body)
 		}
 
-		return nil, WrapError(fmt.Sprintf("http %s on %s", httpMethod, addr.String()), err)
+		return nil, WrapError(fmt.Sprintf("http %s", httpMethod), err)
 	}
 
-	return unmarshalledResponse(res.Body)
+	return getResponseData(res.Body)
 }
 
-func unmarshalledResponse(response io.ReadCloser) ([]byte, error) {
+func getResponseData(response io.ReadCloser) ([]byte, error) {
 	defer response.Close()
 
 	buf := bytes.Buffer{}

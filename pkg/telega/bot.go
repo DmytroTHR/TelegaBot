@@ -30,6 +30,7 @@ func NewBot(host, token string) (*Bot, error) {
 	}
 
 	log.Println("New Bot connected:", theBot.ID)
+
 	return theBot, nil
 }
 
@@ -59,7 +60,7 @@ func (b *Bot) fillInfo() error {
 		return helpers.WrapError(methodStr, helpers.WrapError("unmarshal result", err))
 	}
 	if !response.OK {
-		return helpers.WrapError(methodStr, helpers.Error("bad result (not OK) from API"))
+		return helpers.WrapError(methodStr, helpers.Error("false API request result"))
 	}
 	b.ID = response.Result.ID
 	b.Username = response.Result.Username

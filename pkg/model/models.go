@@ -40,6 +40,11 @@ type Update struct {
 	ChatJoinRequest    *ChatJoinRequest    `json:"chat_join_request,omitempty"`
 }
 
+type ResponseUpdate struct {
+	OK     bool      `json:"ok"`
+	Result []*Update `json:"result"`
+}
+
 type Message struct {
 	MessageID                     int                            `json:"message_id"`
 	From                          *User                          `json:"from,omitempty"`
@@ -100,6 +105,11 @@ type Message struct {
 	VideoChatParticipantsInvited  *VideoChatParticipantsInvited  `json:"video_chat_participants_invited,omitempty"`
 	WebAppData                    *WebAppData                    `json:"web_app_data,omitempty"`
 	ReplyMarkup                   *InlineKeyboardMarkup          `json:"reply_markup,omitempty"`
+}
+
+type ResponseMessage struct {
+	OK     bool     `json:"ok"`
+	Result *Message `json:"result"`
 }
 
 type MessageEntity struct {
