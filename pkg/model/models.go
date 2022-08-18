@@ -1,3 +1,4 @@
+//go:generate ffjson $GOFILE
 package model
 
 //TODO: change *date *time fields' type to time.Time

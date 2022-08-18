@@ -1,13 +1,13 @@
 package telega
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/DmytroTHR/telegabot/config"
 	"github.com/DmytroTHR/telegabot/pkg/helpers"
 	"github.com/DmytroTHR/telegabot/pkg/model"
+	"github.com/pquerna/ffjson/ffjson"
 )
 
 var log = helpers.Logger()
@@ -54,7 +54,7 @@ func (b *Bot) fillInfo() error {
 	}
 
 	response := &model.ResponseUser{}
-	err = json.Unmarshal(data, response)
+	err = ffjson.Unmarshal(data, response)
 	if err != nil {
 		return helpers.WrapError(methodStr, helpers.WrapError("unmarshal result", err))
 	}
