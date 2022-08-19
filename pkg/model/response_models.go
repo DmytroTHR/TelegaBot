@@ -1,10 +1,8 @@
-//go:generate ffjson $GOFILE
+//go:generate ffjson -force-regenerate $GOFILE
 package model
 
-//TODO: change *date *time fields' type to time.Time
-
 type User struct {
-	ID                      int    `json:"id"`
+	ID                      int64  `json:"id"`
 	IsBot                   bool   `json:"is_bot"`
 	FirstName               string `json:"first_name"`
 	LastName                string `json:"last_name,omitempty"`
@@ -91,8 +89,8 @@ type Message struct {
 	SupergroupChatCreated         bool                           `json:"supergroup_chat_created,omitempty"`
 	ChannelChatCreated            bool                           `json:"channel_chat_created,omitempty"`
 	MessageAutoDeleteTimerChanged *MessageAutoDeleteTimerChanged `json:"message_auto_delete_timer_changed,omitempty"`
-	MigrateToChatID               int                            `json:"migrate_to_chat_id,omitempty"`
-	MigrateFromChatID             int                            `json:"migrate_from_chat_id,omitempty"`
+	MigrateToChatID               int64                          `json:"migrate_to_chat_id,omitempty"`
+	MigrateFromChatID             int64                          `json:"migrate_from_chat_id,omitempty"`
 	PinnedMessage                 *Message                       `json:"pinned_message,omitempty"`
 	Invoice                       *Invoice                       `json:"invoice,omitempty"`
 	SuccessfulPayment             *SuccessfulPayment             `json:"successful_payment,omitempty"`
@@ -123,7 +121,7 @@ type MessageEntity struct {
 }
 
 type Chat struct {
-	ID                                 int              `json:"id"`
+	ID                                 int64            `json:"id"`
 	Type                               string           `json:"type"`
 	Title                              string           `json:"title,omitempty"`
 	Username                           string           `json:"username,omitempty"`
@@ -144,7 +142,7 @@ type Chat struct {
 	HasProtectedContent                bool             `json:"has_protected_content,omitempty"`
 	StickerSetName                     string           `json:"sticker_set_name,omitempty"`
 	CanSetStickerSet                   bool             `json:"can_set_sticker_set,omitempty"`
-	LinkedChatID                       int              `json:"linked_chat_id,omitempty"`
+	LinkedChatID                       int64            `json:"linked_chat_id,omitempty"`
 	Location                           *ChatLocation    `json:"location,omitempty"`
 }
 
@@ -152,7 +150,7 @@ type Contact struct {
 	PhoneNumber string `json:"phone_number"`
 	FirstName   string `json:"first_name"`
 	LastName    string `json:"last_name,omitempty"`
-	UserID      int    `json:"user_id,omitempty"`
+	UserID      int64  `json:"user_id,omitempty"`
 	Vcard       string `json:"vcard,omitempty"`
 }
 
@@ -161,13 +159,13 @@ type PhotoSize struct {
 	FileUniqueID string `json:"file_unique_id"`
 	Width        int    `json:"width"`
 	Height       int    `json:"height"`
-	FileSize     int    `json:"file_size,omitempty"`
+	FileSize     int64  `json:"file_size,omitempty"`
 }
 
 type File struct {
 	FileID       string `json:"file_id"`
 	FileUniqueID string `json:"file_unique_id"`
-	FileSize     int    `json:"file_size,omitempty"`
+	FileSize     int64  `json:"file_size,omitempty"`
 	FilePath     string `json:"file_path,omitempty"`
 }
 
@@ -185,7 +183,7 @@ type Sticker struct {
 	PremiumAnimation *File         `json:"premium_animation,omitempty"`
 	MaskPosition     *MaskPosition `json:"mask_position,omitempty"`
 	CustomEmojiID    string        `json:"custom_emoji_id,omitempty"`
-	FileSize         int           `json:"file_size,omitempty"`
+	FileSize         int64         `json:"file_size,omitempty"`
 }
 
 type Animation struct {
@@ -197,7 +195,7 @@ type Animation struct {
 	Thumb        *PhotoSize `json:"thumb,omitempty"`
 	FileName     string     `json:"file_name,omitempty"`
 	MimeType     string     `json:"mime_type,omitempty"`
-	FileSize     int        `json:"file_size,omitempty"`
+	FileSize     int64      `json:"file_size,omitempty"`
 }
 
 type Audio struct {
@@ -208,7 +206,7 @@ type Audio struct {
 	Title        string     `json:"title,omitempty"`
 	FileName     string     `json:"file_name,omitempty"`
 	MimeType     string     `json:"mime_type,omitempty"`
-	FileSize     int        `json:"file_size,omitempty"`
+	FileSize     int64      `json:"file_size,omitempty"`
 	Thumb        *PhotoSize `json:"thumb,omitempty"`
 }
 
@@ -218,7 +216,7 @@ type Document struct {
 	Thumb        *PhotoSize `json:"thumb,omitempty"`
 	FileName     string     `json:"file_name,omitempty"`
 	MimeType     string     `json:"mime_type,omitempty"`
-	FileSize     int        `json:"file_size,omitempty"`
+	FileSize     int64      `json:"file_size,omitempty"`
 }
 
 type Video struct {
@@ -230,7 +228,7 @@ type Video struct {
 	Thumb        *PhotoSize `json:"thumb,omitempty"`
 	FileName     string     `json:"file_name,omitempty"`
 	MimeType     string     `json:"mime_type,omitempty"`
-	FileSize     int        `json:"file_size,omitempty"`
+	FileSize     int64      `json:"file_size,omitempty"`
 }
 
 type VideoNote struct {
@@ -239,14 +237,14 @@ type VideoNote struct {
 	Length       int        `json:"length"`
 	Duration     int        `json:"duration"`
 	Thumb        *PhotoSize `json:"thumb,omitempty"`
-	FileSize     int        `json:"file_size,omitempty"`
+	FileSize     int64      `json:"file_size,omitempty"`
 }
 type Voice struct {
 	FileID       string `json:"file_id"`
 	FileUniqueID string `json:"file_unique_id"`
 	Duration     int    `json:"duration"`
 	MimeType     string `json:"mime_type,omitempty"`
-	FileSize     int    `json:"file_size,omitempty"`
+	FileSize     int64  `json:"file_size,omitempty"`
 }
 
 type Dice struct {
@@ -548,7 +546,7 @@ type SuccessfulPayment struct {
 type PassportFile struct {
 	FileID       string `json:"file_id"`
 	FileUniqueID string `json:"file_unique_id"`
-	FileSize     int    `json:"file_size"`
+	FileSize     int64  `json:"file_size"`
 	FileDate     int    `json:"file_date"`
 }
 
@@ -594,29 +592,4 @@ type LoginURL struct {
 }
 
 type CallbackGame struct {
-}
-
-type InlineKeyboardButton struct {
-	Text                         string        `json:"text"`
-	URL                          string        `json:"url,omitempty"`
-	CallbackData                 string        `json:"callback_data,omitempty"`
-	WebApp                       *WebAppInfo   `json:"web_app,omitempty"`
-	LoginURL                     *LoginURL     `json:"login_url,omitempty"`
-	SwitchInlineQuery            string        `json:"switch_inline_query,omitempty"`
-	SwitchInlineQueryCurrentChat string        `json:"switch_inline_query_current_chat,omitempty"`
-	CallbackGame                 *CallbackGame `json:"callback_game,omitempty"`
-	Pay                          bool          `json:"pay,omitempty"`
-}
-
-type InlineKeyboardMarkup struct {
-	InlineKeyboard [][]*InlineKeyboardButton `json:"inline_keyboard"`
-}
-
-type InlineQuery struct {
-	ID       string    `json:"id"`
-	From     *User     `json:"from"`
-	Query    string    `json:"query"`
-	Offset   string    `json:"offset"`
-	ChatType string    `json:"chat_type,omitempty"`
-	Location *Location `json:"location,omitempty"`
 }

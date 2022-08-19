@@ -22,16 +22,16 @@ func NewApplication(host, token string) *Application {
 }
 
 func (app *Application) Run() error {
-	bot, err := telega.NewBot(app.host, app.token)
+	bot, err := telega.NewBot(app.host, app.token, 0, 0)
 	if err != nil {
 		return err
 	}
-	updates := bot.GetUpdates(context.TODO())
+	ctx := context.TODO()
+	updates := bot.UpdateReceiver(ctx)
 	for upd := range updates {
 		if upd.Err != nil {
 			return upd.Err
 		}
-		log.Println(upd.Data.Message)
 
 		msg := upd.Data.Message
 		user := msg.From
@@ -39,11 +39,24 @@ func (app *Application) Run() error {
 		textResponse := fmt.Sprintf(
 			"<a href=\"tg://user?id=%d\"><b>%s</b></a> just posted:\n <span class=\"tg-spoiler\">%s</span>",
 			user.ID, user.Username, msg.Text)
-		sentMsg, err := bot.SendHTMLMessageToChat(msg.Chat.ID, textResponse, false)
+		msgJSON, err := telega.NewMessageReplySimple(msg.Chat.ID, textResponse, msg.MessageID)
 		if err != nil {
 			return err
 		}
-		log.Printf("%#v\n", sentMsg)
+		_, err = bot.SendMessage(ctx, msgJSON)
+		if err != nil {
+			return err
+		}
+
+		pathToPhoto := "./testdata/photo.jpeg"
+		msgPhoto, err := telega.NewPhotoRequestWithCaption(msg.Chat.ID, pathToPhoto, "Elephant")
+		if err != nil {
+			return err
+		}
+		_, err = bot.SendPhoto(ctx, msgPhoto)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

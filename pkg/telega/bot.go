@@ -1,7 +1,9 @@
 package telega
 
 import (
+	"context"
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/DmytroTHR/telegabot/config"
@@ -14,16 +16,18 @@ var log = helpers.Logger()
 
 type Bot struct {
 	Config   *config.Config
-	ID       int
+	ID       int64
 	Username string
 }
 
-func NewBot(host, token string) (*Bot, error) {
-	conf, err := config.NewConfig(host, token)
+func NewBot(host, token string, timeout, limit int) (*Bot, error) {
+	conf, err := config.NewConfig(host, token, timeout, limit)
 	if err != nil {
 		return nil, helpers.WrapError("create Bot", err)
 	}
-	theBot := &Bot{Config: conf}
+	theBot := &Bot{
+		Config: conf,
+	}
 	err = theBot.fillInfo()
 	if err != nil {
 		return nil, err
@@ -34,12 +38,23 @@ func NewBot(host, token string) (*Bot, error) {
 	return theBot, nil
 }
 
-func (b *Bot) GetAPIResponse(methodCalled, httpMethod, reqBody string) ([]byte, error) {
+func (b *Bot) GetAPIResponse(ctx context.Context, methodCalled, httpMethod string,
+	reqBody io.Reader, headers map[string]string) ([]byte, error) {
 	addr, err := b.Config.FullAPIPath(methodCalled)
 	if err != nil {
 		return nil, helpers.WrapError("make API path", err)
 	}
-	data, err := helpers.ReadFromRequest(addr, httpMethod, reqBody)
+
+	req, err := http.NewRequestWithContext(ctx, httpMethod, addr.String(), reqBody)
+	if err != nil {
+		return nil, helpers.WrapError("prepare API request", err)
+	}
+	for key, val := range headers {
+		req.Header.Add(key, val)
+	}
+
+	data, err := helpers.ReadFromRequest(req)
+	log.Debugln("Made request on:", methodCalled)
 	if err != nil {
 		return nil, helpers.WrapError("execute API request", err)
 	}
@@ -49,7 +64,7 @@ func (b *Bot) GetAPIResponse(methodCalled, httpMethod, reqBody string) ([]byte, 
 
 func (b *Bot) fillInfo() error {
 	methodStr := fmt.Sprintf("method <%s>", model.MethodGetMe)
-	data, err := b.GetAPIResponse(model.MethodGetMe, http.MethodGet, "")
+	data, err := b.GetAPIResponse(context.Background(), model.MethodGetMe, http.MethodGet, nil, nil)
 	if err != nil {
 		return helpers.WrapError(methodStr, err)
 	}

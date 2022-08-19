@@ -1,20 +1,20 @@
 package telega
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"mime/multipart"
 	"net/http"
+	"os"
 
 	"github.com/DmytroTHR/telegabot/pkg/helpers"
 	"github.com/DmytroTHR/telegabot/pkg/model"
 	"github.com/pquerna/ffjson/ffjson"
 )
 
-const (
-	updateTimeout = 10
-	updateLimit   = 10
-)
 const (
 	typeMessage    = "message"
 	typeEditedChan = "edited_channel_post"
@@ -33,96 +33,204 @@ func NewUpdateResponse(data *model.Update, err error) UpdateResponse {
 	}
 }
 
-func (b *Bot) GetUpdates(ctx context.Context) <-chan UpdateResponse {
+func (b *Bot) UpdateReceiver(ctx context.Context) <-chan UpdateResponse {
 	methodStr := fmt.Sprintf("method <%s>", model.MethodGetUpdates)
-	response := make(chan UpdateResponse, updateLimit)
-	bodyJSON := &struct {
-		Offset         int      `json:"offset"`
-		Limit          int      `json:"limit"`
-		Timeout        int      `json:"timeout"`
-		AllowedUpdates []string `json:"allowed_updates"`
-	}{
+	answerCh := make(chan UpdateResponse, b.Config.UpdateMsgLimit)
+	bodyJSON := &model.UpdateMessageRequest{
 		Offset:         0,
-		Limit:          updateLimit,
-		Timeout:        updateTimeout,
+		Limit:          b.Config.UpdateMsgLimit,
+		Timeout:        b.Config.UpdateTimeout,
 		AllowedUpdates: []string{typeMessage, typeEditedChan, typeCallback},
 	}
 
 	go func() {
 		for {
-			body, err := json.Marshal(bodyJSON)
+			body, err := ffjson.Marshal(bodyJSON)
 			if err != nil {
-				response <- NewUpdateResponse(nil,
-					helpers.WrapError(methodStr, helpers.WrapError("marshalling update request", err)))
+				answerCh <- NewUpdateResponse(nil,
+					helpers.WrapError(methodStr, helpers.WrapError("marshal request", err)))
 				continue
 			}
-			data, err := b.GetAPIResponse(model.MethodGetUpdates, http.MethodPost, string(body))
+			response, err := b.GetAPIResponse(ctx, model.MethodGetUpdates, http.MethodPost,
+				bytes.NewReader(body), helpers.DefaultHeader())
 			if err != nil {
-				response <- NewUpdateResponse(nil, helpers.WrapError(methodStr, err))
+				answerCh <- NewUpdateResponse(nil, helpers.WrapError(methodStr, err))
 				continue
 			}
 
 			result := &model.ResponseUpdate{}
-			err = ffjson.Unmarshal(data, result)
+			err = ffjson.Unmarshal(response, result)
 			if err != nil {
-				response <- NewUpdateResponse(nil, helpers.WrapError(methodStr,
+				answerCh <- NewUpdateResponse(nil, helpers.WrapError(methodStr,
 					helpers.WrapError("unmarshal result", err)))
 				continue
 			}
 			if !result.OK {
-				response <- NewUpdateResponse(nil, helpers.WrapError(methodStr,
-					helpers.WrapError("false API request result", err)))
+				answerCh <- NewUpdateResponse(nil, helpers.WrapError(methodStr,
+					helpers.Error(fmt.Sprintf("request API result: %s", string(response)))))
 				continue
 			}
 
 			for _, upd := range result.Result {
-				response <- NewUpdateResponse(upd, nil)
+				answerCh <- NewUpdateResponse(upd, nil)
 				bodyJSON.Offset = upd.UpdateID + 1
 			}
 
 			select {
 			case <-ctx.Done():
-				close(response)
+				close(answerCh)
+				log.Println("Stop receiving updates for:", b.ID)
 				return
 			default:
 			}
 		}
 	}()
 
-	return response
+	return answerCh
 }
 
-func (b *Bot) SendHTMLMessageToChat(chatID int, text string, silent bool) (*model.Message, error) {
+func (b *Bot) SendMessage(ctx context.Context, message *model.SendMessageRequest) (*model.Message, error) {
 	methodStr := fmt.Sprintf("method <%s>", model.MethodSendMessage)
-	msgJSON := &struct {
-		ChatID              int    `json:"chat_id"`
-		Text                string `json:"text"`
-		ParseMode           string `json:"parse_mode"`
-		DisableNotification bool   `json:"disable_notification"`
-	}{
-		ChatID:              chatID,
-		Text:                text,
-		ParseMode:           "HTML",
-		DisableNotification: silent,
-	}
-	body, err := json.Marshal(msgJSON)
+
+	body, err := ffjson.Marshal(message)
 	if err != nil {
-		return nil, helpers.WrapError(methodStr, helpers.WrapError("marshalling update request", err))
+		return nil, helpers.WrapError(methodStr, helpers.WrapError("marshal request", err))
 	}
-	data, err := b.GetAPIResponse(model.MethodSendMessage, http.MethodPost, string(body))
+	response, err := b.GetAPIResponse(ctx, model.MethodSendMessage, http.MethodPost,
+		bytes.NewReader(body), helpers.DefaultHeader())
 	if err != nil {
 		return nil, helpers.WrapError(methodStr, err)
 	}
 
-	log.Warnln(string(data))
 	result := &model.ResponseMessage{}
-	err = ffjson.Unmarshal(data, result)
+	err = ffjson.Unmarshal(response, result)
 	if err != nil {
 		return nil, helpers.WrapError(methodStr, helpers.WrapError("unmarshal result", err))
 	}
 	if !result.OK {
-		return nil, helpers.WrapError(methodStr, helpers.WrapError("false API request result", err))
+		return nil, helpers.WrapError(methodStr,
+			helpers.Error(fmt.Sprintf("request API result: %s", string(response))))
 	}
 
 	return result.Result, nil
+}
+
+func NewMessageSimple(chatID any, text string) (*model.SendMessageRequest, error) {
+	id, err := ChatIDFrom(chatID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.SendMessageRequest{
+		ChatID:    id,
+		Text:      text,
+		ParseMode: "HTML",
+	}, nil
+}
+
+func NewMessageReplySimple(chatID any, text string, replyMessageID int) (*model.SendMessageRequest, error) {
+	simpleMessage, err := NewMessageSimple(chatID, text)
+	if err != nil {
+		return nil, err
+	}
+	simpleMessage.ReplyToMessageID = replyMessageID
+	simpleMessage.AllowSendingWithoutReply = true
+
+	return simpleMessage, nil
+}
+
+func NewPhotoRequest(chatID any, pathToFile string) (*model.SendPhotoRequest, error) {
+	id, err := ChatIDFrom(chatID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.SendPhotoRequest{
+		ChatID: id,
+		Photo:  pathToFile,
+	}, nil
+}
+
+func NewPhotoRequestWithCaption(chatID any, pathToFile, caption string) (*model.SendPhotoRequest, error) {
+	simpleRequest, err := NewPhotoRequest(chatID, pathToFile)
+	if err != nil {
+		return nil, err
+	}
+	simpleRequest.Caption = caption
+
+	return simpleRequest, nil
+}
+
+func (b *Bot) SendPhoto(ctx context.Context, photoRequest *model.SendPhotoRequest) (*model.Message, error) {
+	methodStr := fmt.Sprintf("method <%s>", model.MethodSendPhoto)
+
+	body, err := ffjson.Marshal(photoRequest)
+	if err != nil {
+		return nil, helpers.WrapError(methodStr, helpers.WrapError("marshal request", err))
+	}
+	conv := map[string]json.RawMessage{}
+	err = json.Unmarshal(body, &conv)
+	if err != nil {
+		return nil, helpers.WrapError(methodStr, helpers.WrapError("unmarshal request to options", err))
+	}
+	opts := map[string]string{}
+	for k := range conv {
+		opts[k] = string(conv[k])
+	}
+	delete(opts, "photo")
+
+	preparedData, contentType, err := prepareFileToUpload(photoRequest.Photo, opts)
+	if err != nil {
+		return nil, helpers.WrapError(methodStr, err)
+	}
+
+	header := map[string]string{
+		"Content-Type": contentType,
+	}
+	response, err := b.GetAPIResponse(ctx, model.MethodSendPhoto, http.MethodPost, preparedData, header)
+	if err != nil {
+		return nil, helpers.WrapError(methodStr, err)
+	}
+	result := &model.ResponseMessage{}
+	err = ffjson.Unmarshal(response, result)
+	if err != nil {
+		return nil, helpers.WrapError(methodStr, helpers.WrapError("unmarshal result", err))
+	}
+	if !result.OK {
+		return nil, helpers.WrapError(methodStr,
+			helpers.Error(fmt.Sprintf("request API result: %s", string(response))))
+	}
+
+	return result.Result, nil
+}
+
+func prepareFileToUpload(filePath string, options map[string]string) (*bytes.Buffer, string, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, "", helpers.WrapError("open file for upload", err)
+	}
+	defer file.Close()
+
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+	for key, val := range options {
+		err = writer.WriteField(key, val)
+		if err != nil {
+			return nil, "", helpers.WrapError("set mime fields", err)
+		}
+	}
+	part, err := writer.CreateFormFile("photo", filePath)
+	if err != nil {
+		return nil, "", helpers.WrapError("create form file", err)
+	}
+	n, err := io.Copy(part, file)
+	writer.Close()
+	if err != nil {
+		return nil, "", helpers.WrapError("copy file to part", err)
+	}
+	if n == 0 {
+		return nil, "", helpers.Error("no data copied from file")
+	}
+
+	return body, writer.FormDataContentType(), nil
 }

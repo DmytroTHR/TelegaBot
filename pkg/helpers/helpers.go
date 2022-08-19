@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
-	"strings"
 
 	"github.com/sirupsen/logrus"
 )
@@ -26,34 +24,35 @@ func Logger() *logrus.Logger {
 	return log
 }
 
-func ReadFromRequest(addr *url.URL, httpMethod, body string) ([]byte, error) {
-	var res *http.Response
-	var err error
-
-	log.Println("Requesting on API")
-	switch httpMethod {
-	case http.MethodGet:
-		res, err = http.Get(addr.String())
-	case http.MethodPost:
-		res, err = http.Post(addr.String(), DefaultContentType, strings.NewReader(body))
-	default:
-		return nil, fmt.Errorf("%s method is not allowed", httpMethod)
+func DefaultHeader() map[string]string {
+	return map[string]string{
+		"Content-Type": "application/json",
 	}
+}
+
+func ReadFromRequest(request *http.Request) ([]byte, error) {
+	log.Debugln("making request on API")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		return nil, WrapError("receive response", err)
+	}
+	defer res.Body.Close()
 
 	if err != nil {
-		if len(body) > 0 {
-			log.Warnln("BODY:\t", body)
+		var buf []byte
+		n, _ := request.Body.Read(buf)
+		if n > 0 {
+			log.Warnln("BODY:\t", string(buf))
 		}
 
-		return nil, WrapError(fmt.Sprintf("http %s", httpMethod), err)
+		return nil, WrapError(fmt.Sprintf("http %s", request.Method), err)
 	}
 
 	return getResponseData(res.Body)
 }
 
 func getResponseData(response io.ReadCloser) ([]byte, error) {
-	defer response.Close()
-
 	buf := bytes.Buffer{}
 	_, err := io.Copy(&buf, response)
 	if err != nil {
@@ -64,7 +63,7 @@ func getResponseData(response io.ReadCloser) ([]byte, error) {
 }
 
 func WrapError(withMessage string, err error) error {
-	log.Errorf("%s: %v\n", withMessage, err)
+	log.Errorf("%s: %s\n", withMessage, err)
 
 	return fmt.Errorf("%s: %w", withMessage, err)
 }
