@@ -3055,6 +3055,3438 @@ done:
 }
 
 // MarshalJSON marshal bytes to json - template
+func (j *SendAnimationRequest) MarshalJSON() ([]byte, error) {
+	var buf fflib.Buffer
+	if j == nil {
+		buf.WriteString("null")
+		return buf.Bytes(), nil
+	}
+	err := j.MarshalJSONBuf(&buf)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// MarshalJSONBuf marshal buff to json - template
+func (j *SendAnimationRequest) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{ "chat_id":`)
+	/* Interface types must use runtime reflection. type=model.IntOrStr kind=interface */
+	err = buf.Encode(j.ChatID)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"animation":`)
+	fflib.WriteJsonString(buf, string(j.Animation))
+	buf.WriteByte(',')
+	if j.Duration != 0 {
+		buf.WriteString(`"duration":`)
+		fflib.FormatBits2(buf, uint64(j.Duration), 10, j.Duration < 0)
+		buf.WriteByte(',')
+	}
+	if j.Width != 0 {
+		buf.WriteString(`"width":`)
+		fflib.FormatBits2(buf, uint64(j.Width), 10, j.Width < 0)
+		buf.WriteByte(',')
+	}
+	if j.Height != 0 {
+		buf.WriteString(`"height":`)
+		fflib.FormatBits2(buf, uint64(j.Height), 10, j.Height < 0)
+		buf.WriteByte(',')
+	}
+	if len(j.Thumb) != 0 {
+		buf.WriteString(`"thumb":`)
+		fflib.WriteJsonString(buf, string(j.Thumb))
+		buf.WriteByte(',')
+	}
+	if len(j.Caption) != 0 {
+		buf.WriteString(`"caption":`)
+		fflib.WriteJsonString(buf, string(j.Caption))
+		buf.WriteByte(',')
+	}
+	if len(j.ParseMode) != 0 {
+		buf.WriteString(`"parse_mode":`)
+		fflib.WriteJsonString(buf, string(j.ParseMode))
+		buf.WriteByte(',')
+	}
+	if len(j.CaptionEntities) != 0 {
+		buf.WriteString(`"caption_entities":`)
+		if j.CaptionEntities != nil {
+			buf.WriteString(`[`)
+			for i, v := range j.CaptionEntities {
+				if i != 0 {
+					buf.WriteString(`,`)
+				}
+
+				{
+
+					if v == nil {
+						buf.WriteString("null")
+					} else {
+
+						err = v.MarshalJSONBuf(buf)
+						if err != nil {
+							return err
+						}
+
+					}
+
+				}
+			}
+			buf.WriteString(`]`)
+		} else {
+			buf.WriteString(`null`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.DisableNotification != false {
+		if j.DisableNotification {
+			buf.WriteString(`"disable_notification":true`)
+		} else {
+			buf.WriteString(`"disable_notification":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ProtectContent != false {
+		if j.ProtectContent {
+			buf.WriteString(`"protect_content":true`)
+		} else {
+			buf.WriteString(`"protect_content":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ReplyToMessageID != 0 {
+		buf.WriteString(`"reply_to_message_id":`)
+		fflib.FormatBits2(buf, uint64(j.ReplyToMessageID), 10, j.ReplyToMessageID < 0)
+		buf.WriteByte(',')
+	}
+	if j.AllowSendingWithoutReply != false {
+		if j.AllowSendingWithoutReply {
+			buf.WriteString(`"allow_sending_without_reply":true`)
+		} else {
+			buf.WriteString(`"allow_sending_without_reply":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ReplyMarkup != nil {
+		if true {
+			buf.WriteString(`"reply_markup":`)
+			/* Interface types must use runtime reflection. type=model.ReplyMarkup kind=interface */
+			err = buf.Encode(j.ReplyMarkup)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtSendAnimationRequestbase = iota
+	ffjtSendAnimationRequestnosuchkey
+
+	ffjtSendAnimationRequestChatID
+
+	ffjtSendAnimationRequestAnimation
+
+	ffjtSendAnimationRequestDuration
+
+	ffjtSendAnimationRequestWidth
+
+	ffjtSendAnimationRequestHeight
+
+	ffjtSendAnimationRequestThumb
+
+	ffjtSendAnimationRequestCaption
+
+	ffjtSendAnimationRequestParseMode
+
+	ffjtSendAnimationRequestCaptionEntities
+
+	ffjtSendAnimationRequestDisableNotification
+
+	ffjtSendAnimationRequestProtectContent
+
+	ffjtSendAnimationRequestReplyToMessageID
+
+	ffjtSendAnimationRequestAllowSendingWithoutReply
+
+	ffjtSendAnimationRequestReplyMarkup
+)
+
+var ffjKeySendAnimationRequestChatID = []byte("chat_id")
+
+var ffjKeySendAnimationRequestAnimation = []byte("animation")
+
+var ffjKeySendAnimationRequestDuration = []byte("duration")
+
+var ffjKeySendAnimationRequestWidth = []byte("width")
+
+var ffjKeySendAnimationRequestHeight = []byte("height")
+
+var ffjKeySendAnimationRequestThumb = []byte("thumb")
+
+var ffjKeySendAnimationRequestCaption = []byte("caption")
+
+var ffjKeySendAnimationRequestParseMode = []byte("parse_mode")
+
+var ffjKeySendAnimationRequestCaptionEntities = []byte("caption_entities")
+
+var ffjKeySendAnimationRequestDisableNotification = []byte("disable_notification")
+
+var ffjKeySendAnimationRequestProtectContent = []byte("protect_content")
+
+var ffjKeySendAnimationRequestReplyToMessageID = []byte("reply_to_message_id")
+
+var ffjKeySendAnimationRequestAllowSendingWithoutReply = []byte("allow_sending_without_reply")
+
+var ffjKeySendAnimationRequestReplyMarkup = []byte("reply_markup")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *SendAnimationRequest) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *SendAnimationRequest) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtSendAnimationRequestbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_left_bracket {
+				wantedTok = fflib.FFTok_left_bracket
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_key
+			continue
+
+		case fflib.FFParse_after_value:
+			if tok == fflib.FFTok_comma {
+				state = fflib.FFParse_want_key
+			} else if tok == fflib.FFTok_right_bracket {
+				goto done
+			} else {
+				wantedTok = fflib.FFTok_comma
+				goto wrongtokenerror
+			}
+
+		case fflib.FFParse_want_key:
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtSendAnimationRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeySendAnimationRequestAnimation, kn) {
+						currentKey = ffjtSendAnimationRequestAnimation
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendAnimationRequestAllowSendingWithoutReply, kn) {
+						currentKey = ffjtSendAnimationRequestAllowSendingWithoutReply
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'c':
+
+					if bytes.Equal(ffjKeySendAnimationRequestChatID, kn) {
+						currentKey = ffjtSendAnimationRequestChatID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendAnimationRequestCaption, kn) {
+						currentKey = ffjtSendAnimationRequestCaption
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendAnimationRequestCaptionEntities, kn) {
+						currentKey = ffjtSendAnimationRequestCaptionEntities
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'd':
+
+					if bytes.Equal(ffjKeySendAnimationRequestDuration, kn) {
+						currentKey = ffjtSendAnimationRequestDuration
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendAnimationRequestDisableNotification, kn) {
+						currentKey = ffjtSendAnimationRequestDisableNotification
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'h':
+
+					if bytes.Equal(ffjKeySendAnimationRequestHeight, kn) {
+						currentKey = ffjtSendAnimationRequestHeight
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'p':
+
+					if bytes.Equal(ffjKeySendAnimationRequestParseMode, kn) {
+						currentKey = ffjtSendAnimationRequestParseMode
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendAnimationRequestProtectContent, kn) {
+						currentKey = ffjtSendAnimationRequestProtectContent
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'r':
+
+					if bytes.Equal(ffjKeySendAnimationRequestReplyToMessageID, kn) {
+						currentKey = ffjtSendAnimationRequestReplyToMessageID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendAnimationRequestReplyMarkup, kn) {
+						currentKey = ffjtSendAnimationRequestReplyMarkup
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 't':
+
+					if bytes.Equal(ffjKeySendAnimationRequestThumb, kn) {
+						currentKey = ffjtSendAnimationRequestThumb
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'w':
+
+					if bytes.Equal(ffjKeySendAnimationRequestWidth, kn) {
+						currentKey = ffjtSendAnimationRequestWidth
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendAnimationRequestReplyMarkup, kn) {
+					currentKey = ffjtSendAnimationRequestReplyMarkup
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendAnimationRequestAllowSendingWithoutReply, kn) {
+					currentKey = ffjtSendAnimationRequestAllowSendingWithoutReply
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendAnimationRequestReplyToMessageID, kn) {
+					currentKey = ffjtSendAnimationRequestReplyToMessageID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendAnimationRequestProtectContent, kn) {
+					currentKey = ffjtSendAnimationRequestProtectContent
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendAnimationRequestDisableNotification, kn) {
+					currentKey = ffjtSendAnimationRequestDisableNotification
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendAnimationRequestCaptionEntities, kn) {
+					currentKey = ffjtSendAnimationRequestCaptionEntities
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendAnimationRequestParseMode, kn) {
+					currentKey = ffjtSendAnimationRequestParseMode
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendAnimationRequestCaption, kn) {
+					currentKey = ffjtSendAnimationRequestCaption
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendAnimationRequestThumb, kn) {
+					currentKey = ffjtSendAnimationRequestThumb
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendAnimationRequestHeight, kn) {
+					currentKey = ffjtSendAnimationRequestHeight
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendAnimationRequestWidth, kn) {
+					currentKey = ffjtSendAnimationRequestWidth
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendAnimationRequestDuration, kn) {
+					currentKey = ffjtSendAnimationRequestDuration
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendAnimationRequestAnimation, kn) {
+					currentKey = ffjtSendAnimationRequestAnimation
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendAnimationRequestChatID, kn) {
+					currentKey = ffjtSendAnimationRequestChatID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtSendAnimationRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtSendAnimationRequestChatID:
+					goto handle_ChatID
+
+				case ffjtSendAnimationRequestAnimation:
+					goto handle_Animation
+
+				case ffjtSendAnimationRequestDuration:
+					goto handle_Duration
+
+				case ffjtSendAnimationRequestWidth:
+					goto handle_Width
+
+				case ffjtSendAnimationRequestHeight:
+					goto handle_Height
+
+				case ffjtSendAnimationRequestThumb:
+					goto handle_Thumb
+
+				case ffjtSendAnimationRequestCaption:
+					goto handle_Caption
+
+				case ffjtSendAnimationRequestParseMode:
+					goto handle_ParseMode
+
+				case ffjtSendAnimationRequestCaptionEntities:
+					goto handle_CaptionEntities
+
+				case ffjtSendAnimationRequestDisableNotification:
+					goto handle_DisableNotification
+
+				case ffjtSendAnimationRequestProtectContent:
+					goto handle_ProtectContent
+
+				case ffjtSendAnimationRequestReplyToMessageID:
+					goto handle_ReplyToMessageID
+
+				case ffjtSendAnimationRequestAllowSendingWithoutReply:
+					goto handle_AllowSendingWithoutReply
+
+				case ffjtSendAnimationRequestReplyMarkup:
+					goto handle_ReplyMarkup
+
+				case ffjtSendAnimationRequestnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_ChatID:
+
+	/* handler: j.ChatID type=model.IntOrStr kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.IntOrStr kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ChatID)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Animation:
+
+	/* handler: j.Animation type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.Animation = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Duration:
+
+	/* handler: j.Duration type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.Duration = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Width:
+
+	/* handler: j.Width type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.Width = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Height:
+
+	/* handler: j.Height type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.Height = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Thumb:
+
+	/* handler: j.Thumb type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.Thumb = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Caption:
+
+	/* handler: j.Caption type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.Caption = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ParseMode:
+
+	/* handler: j.ParseMode type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.ParseMode = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_CaptionEntities:
+
+	/* handler: j.CaptionEntities type=[]*model.MessageEntity kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for ", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.CaptionEntities = nil
+		} else {
+
+			j.CaptionEntities = []*MessageEntity{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJCaptionEntities *MessageEntity
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib.FFTok_right_brace {
+					break
+				}
+
+				if tok == fflib.FFTok_comma {
+					if wantVal == true {
+						// TODO(pquerna): this isn't an ideal error message, this handles
+						// things like [,,,] as an array value.
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJCaptionEntities type=*model.MessageEntity kind=ptr quoted=false*/
+
+				{
+					if tok == fflib.FFTok_null {
+
+						tmpJCaptionEntities = nil
+
+					} else {
+
+						if tmpJCaptionEntities == nil {
+							tmpJCaptionEntities = new(MessageEntity)
+						}
+
+						err = tmpJCaptionEntities.UnmarshalJSONFFLexer(fs, fflib.FFParse_want_key)
+						if err != nil {
+							return err
+						}
+					}
+					state = fflib.FFParse_after_value
+				}
+
+				j.CaptionEntities = append(j.CaptionEntities, tmpJCaptionEntities)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_DisableNotification:
+
+	/* handler: j.DisableNotification type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.DisableNotification = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.DisableNotification = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ProtectContent:
+
+	/* handler: j.ProtectContent type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.ProtectContent = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.ProtectContent = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ReplyToMessageID:
+
+	/* handler: j.ReplyToMessageID type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.ReplyToMessageID = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_AllowSendingWithoutReply:
+
+	/* handler: j.AllowSendingWithoutReply type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.AllowSendingWithoutReply = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.AllowSendingWithoutReply = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ReplyMarkup:
+
+	/* handler: j.ReplyMarkup type=model.ReplyMarkup kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.ReplyMarkup kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ReplyMarkup)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+wantedvalue:
+	return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+wrongtokenerror:
+	return fs.WrapErr(fmt.Errorf("ffjson: wanted token: %v, but got token: %v output=%s", wantedTok, tok, fs.Output.String()))
+tokerror:
+	if fs.BigError != nil {
+		return fs.WrapErr(fs.BigError)
+	}
+	err = fs.Error.ToError()
+	if err != nil {
+		return fs.WrapErr(err)
+	}
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
+
+// MarshalJSON marshal bytes to json - template
+func (j *SendChatActionRequest) MarshalJSON() ([]byte, error) {
+	var buf fflib.Buffer
+	if j == nil {
+		buf.WriteString("null")
+		return buf.Bytes(), nil
+	}
+	err := j.MarshalJSONBuf(&buf)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// MarshalJSONBuf marshal buff to json - template
+func (j *SendChatActionRequest) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{"chat_id":`)
+	/* Interface types must use runtime reflection. type=model.IntOrStr kind=interface */
+	err = buf.Encode(j.ChatID)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"action":`)
+	/* Interface types must use runtime reflection. type=model.ChatActioner kind=interface */
+	err = buf.Encode(j.Action)
+	if err != nil {
+		return err
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtSendChatActionRequestbase = iota
+	ffjtSendChatActionRequestnosuchkey
+
+	ffjtSendChatActionRequestChatID
+
+	ffjtSendChatActionRequestAction
+)
+
+var ffjKeySendChatActionRequestChatID = []byte("chat_id")
+
+var ffjKeySendChatActionRequestAction = []byte("action")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *SendChatActionRequest) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *SendChatActionRequest) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtSendChatActionRequestbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_left_bracket {
+				wantedTok = fflib.FFTok_left_bracket
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_key
+			continue
+
+		case fflib.FFParse_after_value:
+			if tok == fflib.FFTok_comma {
+				state = fflib.FFParse_want_key
+			} else if tok == fflib.FFTok_right_bracket {
+				goto done
+			} else {
+				wantedTok = fflib.FFTok_comma
+				goto wrongtokenerror
+			}
+
+		case fflib.FFParse_want_key:
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtSendChatActionRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeySendChatActionRequestAction, kn) {
+						currentKey = ffjtSendChatActionRequestAction
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'c':
+
+					if bytes.Equal(ffjKeySendChatActionRequestChatID, kn) {
+						currentKey = ffjtSendChatActionRequestChatID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendChatActionRequestAction, kn) {
+					currentKey = ffjtSendChatActionRequestAction
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendChatActionRequestChatID, kn) {
+					currentKey = ffjtSendChatActionRequestChatID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtSendChatActionRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtSendChatActionRequestChatID:
+					goto handle_ChatID
+
+				case ffjtSendChatActionRequestAction:
+					goto handle_Action
+
+				case ffjtSendChatActionRequestnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_ChatID:
+
+	/* handler: j.ChatID type=model.IntOrStr kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.IntOrStr kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ChatID)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Action:
+
+	/* handler: j.Action type=model.ChatActioner kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.ChatActioner kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.Action)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+wantedvalue:
+	return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+wrongtokenerror:
+	return fs.WrapErr(fmt.Errorf("ffjson: wanted token: %v, but got token: %v output=%s", wantedTok, tok, fs.Output.String()))
+tokerror:
+	if fs.BigError != nil {
+		return fs.WrapErr(fs.BigError)
+	}
+	err = fs.Error.ToError()
+	if err != nil {
+		return fs.WrapErr(err)
+	}
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
+
+// MarshalJSON marshal bytes to json - template
+func (j *SendDiceRequest) MarshalJSON() ([]byte, error) {
+	var buf fflib.Buffer
+	if j == nil {
+		buf.WriteString("null")
+		return buf.Bytes(), nil
+	}
+	err := j.MarshalJSONBuf(&buf)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// MarshalJSONBuf marshal buff to json - template
+func (j *SendDiceRequest) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{ "chat_id":`)
+	/* Interface types must use runtime reflection. type=model.IntOrStr kind=interface */
+	err = buf.Encode(j.ChatID)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"emoji":`)
+	fflib.WriteJsonString(buf, string(j.Emoji))
+	buf.WriteByte(',')
+	if j.DisableNotification != false {
+		if j.DisableNotification {
+			buf.WriteString(`"disable_notification":true`)
+		} else {
+			buf.WriteString(`"disable_notification":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ProtectContent != false {
+		if j.ProtectContent {
+			buf.WriteString(`"protect_content":true`)
+		} else {
+			buf.WriteString(`"protect_content":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ReplyToMessageID != 0 {
+		buf.WriteString(`"reply_to_message_id":`)
+		fflib.FormatBits2(buf, uint64(j.ReplyToMessageID), 10, j.ReplyToMessageID < 0)
+		buf.WriteByte(',')
+	}
+	if j.AllowSendingWithoutReply != false {
+		if j.AllowSendingWithoutReply {
+			buf.WriteString(`"allow_sending_without_reply":true`)
+		} else {
+			buf.WriteString(`"allow_sending_without_reply":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ReplyMarkup != nil {
+		if true {
+			buf.WriteString(`"reply_markup":`)
+			/* Interface types must use runtime reflection. type=model.ReplyMarkup kind=interface */
+			err = buf.Encode(j.ReplyMarkup)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtSendDiceRequestbase = iota
+	ffjtSendDiceRequestnosuchkey
+
+	ffjtSendDiceRequestChatID
+
+	ffjtSendDiceRequestEmoji
+
+	ffjtSendDiceRequestDisableNotification
+
+	ffjtSendDiceRequestProtectContent
+
+	ffjtSendDiceRequestReplyToMessageID
+
+	ffjtSendDiceRequestAllowSendingWithoutReply
+
+	ffjtSendDiceRequestReplyMarkup
+)
+
+var ffjKeySendDiceRequestChatID = []byte("chat_id")
+
+var ffjKeySendDiceRequestEmoji = []byte("emoji")
+
+var ffjKeySendDiceRequestDisableNotification = []byte("disable_notification")
+
+var ffjKeySendDiceRequestProtectContent = []byte("protect_content")
+
+var ffjKeySendDiceRequestReplyToMessageID = []byte("reply_to_message_id")
+
+var ffjKeySendDiceRequestAllowSendingWithoutReply = []byte("allow_sending_without_reply")
+
+var ffjKeySendDiceRequestReplyMarkup = []byte("reply_markup")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *SendDiceRequest) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *SendDiceRequest) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtSendDiceRequestbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_left_bracket {
+				wantedTok = fflib.FFTok_left_bracket
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_key
+			continue
+
+		case fflib.FFParse_after_value:
+			if tok == fflib.FFTok_comma {
+				state = fflib.FFParse_want_key
+			} else if tok == fflib.FFTok_right_bracket {
+				goto done
+			} else {
+				wantedTok = fflib.FFTok_comma
+				goto wrongtokenerror
+			}
+
+		case fflib.FFParse_want_key:
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtSendDiceRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeySendDiceRequestAllowSendingWithoutReply, kn) {
+						currentKey = ffjtSendDiceRequestAllowSendingWithoutReply
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'c':
+
+					if bytes.Equal(ffjKeySendDiceRequestChatID, kn) {
+						currentKey = ffjtSendDiceRequestChatID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'd':
+
+					if bytes.Equal(ffjKeySendDiceRequestDisableNotification, kn) {
+						currentKey = ffjtSendDiceRequestDisableNotification
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'e':
+
+					if bytes.Equal(ffjKeySendDiceRequestEmoji, kn) {
+						currentKey = ffjtSendDiceRequestEmoji
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'p':
+
+					if bytes.Equal(ffjKeySendDiceRequestProtectContent, kn) {
+						currentKey = ffjtSendDiceRequestProtectContent
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'r':
+
+					if bytes.Equal(ffjKeySendDiceRequestReplyToMessageID, kn) {
+						currentKey = ffjtSendDiceRequestReplyToMessageID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendDiceRequestReplyMarkup, kn) {
+						currentKey = ffjtSendDiceRequestReplyMarkup
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendDiceRequestReplyMarkup, kn) {
+					currentKey = ffjtSendDiceRequestReplyMarkup
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendDiceRequestAllowSendingWithoutReply, kn) {
+					currentKey = ffjtSendDiceRequestAllowSendingWithoutReply
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendDiceRequestReplyToMessageID, kn) {
+					currentKey = ffjtSendDiceRequestReplyToMessageID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendDiceRequestProtectContent, kn) {
+					currentKey = ffjtSendDiceRequestProtectContent
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendDiceRequestDisableNotification, kn) {
+					currentKey = ffjtSendDiceRequestDisableNotification
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendDiceRequestEmoji, kn) {
+					currentKey = ffjtSendDiceRequestEmoji
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendDiceRequestChatID, kn) {
+					currentKey = ffjtSendDiceRequestChatID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtSendDiceRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtSendDiceRequestChatID:
+					goto handle_ChatID
+
+				case ffjtSendDiceRequestEmoji:
+					goto handle_Emoji
+
+				case ffjtSendDiceRequestDisableNotification:
+					goto handle_DisableNotification
+
+				case ffjtSendDiceRequestProtectContent:
+					goto handle_ProtectContent
+
+				case ffjtSendDiceRequestReplyToMessageID:
+					goto handle_ReplyToMessageID
+
+				case ffjtSendDiceRequestAllowSendingWithoutReply:
+					goto handle_AllowSendingWithoutReply
+
+				case ffjtSendDiceRequestReplyMarkup:
+					goto handle_ReplyMarkup
+
+				case ffjtSendDiceRequestnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_ChatID:
+
+	/* handler: j.ChatID type=model.IntOrStr kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.IntOrStr kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ChatID)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Emoji:
+
+	/* handler: j.Emoji type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.Emoji = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_DisableNotification:
+
+	/* handler: j.DisableNotification type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.DisableNotification = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.DisableNotification = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ProtectContent:
+
+	/* handler: j.ProtectContent type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.ProtectContent = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.ProtectContent = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ReplyToMessageID:
+
+	/* handler: j.ReplyToMessageID type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.ReplyToMessageID = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_AllowSendingWithoutReply:
+
+	/* handler: j.AllowSendingWithoutReply type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.AllowSendingWithoutReply = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.AllowSendingWithoutReply = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ReplyMarkup:
+
+	/* handler: j.ReplyMarkup type=model.ReplyMarkup kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.ReplyMarkup kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ReplyMarkup)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+wantedvalue:
+	return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+wrongtokenerror:
+	return fs.WrapErr(fmt.Errorf("ffjson: wanted token: %v, but got token: %v output=%s", wantedTok, tok, fs.Output.String()))
+tokerror:
+	if fs.BigError != nil {
+		return fs.WrapErr(fs.BigError)
+	}
+	err = fs.Error.ToError()
+	if err != nil {
+		return fs.WrapErr(err)
+	}
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
+
+// MarshalJSON marshal bytes to json - template
+func (j *SendDocumentRequest) MarshalJSON() ([]byte, error) {
+	var buf fflib.Buffer
+	if j == nil {
+		buf.WriteString("null")
+		return buf.Bytes(), nil
+	}
+	err := j.MarshalJSONBuf(&buf)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// MarshalJSONBuf marshal buff to json - template
+func (j *SendDocumentRequest) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{ "chat_id":`)
+	/* Interface types must use runtime reflection. type=model.IntOrStr kind=interface */
+	err = buf.Encode(j.ChatID)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"document":`)
+	fflib.WriteJsonString(buf, string(j.Document))
+	buf.WriteByte(',')
+	if len(j.Thumb) != 0 {
+		buf.WriteString(`"thumb":`)
+		fflib.WriteJsonString(buf, string(j.Thumb))
+		buf.WriteByte(',')
+	}
+	if len(j.Caption) != 0 {
+		buf.WriteString(`"caption":`)
+		fflib.WriteJsonString(buf, string(j.Caption))
+		buf.WriteByte(',')
+	}
+	if len(j.ParseMode) != 0 {
+		buf.WriteString(`"parse_mode":`)
+		fflib.WriteJsonString(buf, string(j.ParseMode))
+		buf.WriteByte(',')
+	}
+	if len(j.CaptionEntities) != 0 {
+		buf.WriteString(`"caption_entities":`)
+		if j.CaptionEntities != nil {
+			buf.WriteString(`[`)
+			for i, v := range j.CaptionEntities {
+				if i != 0 {
+					buf.WriteString(`,`)
+				}
+
+				{
+
+					if v == nil {
+						buf.WriteString("null")
+					} else {
+
+						err = v.MarshalJSONBuf(buf)
+						if err != nil {
+							return err
+						}
+
+					}
+
+				}
+			}
+			buf.WriteString(`]`)
+		} else {
+			buf.WriteString(`null`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.DisableContentTypeDetection != false {
+		if j.DisableContentTypeDetection {
+			buf.WriteString(`"disable_content_type_detection":true`)
+		} else {
+			buf.WriteString(`"disable_content_type_detection":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.DisableNotification != false {
+		if j.DisableNotification {
+			buf.WriteString(`"disable_notification":true`)
+		} else {
+			buf.WriteString(`"disable_notification":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ProtectContent != false {
+		if j.ProtectContent {
+			buf.WriteString(`"protect_content":true`)
+		} else {
+			buf.WriteString(`"protect_content":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ReplyToMessageID != 0 {
+		buf.WriteString(`"reply_to_message_id":`)
+		fflib.FormatBits2(buf, uint64(j.ReplyToMessageID), 10, j.ReplyToMessageID < 0)
+		buf.WriteByte(',')
+	}
+	if j.AllowSendingWithoutReply != false {
+		if j.AllowSendingWithoutReply {
+			buf.WriteString(`"allow_sending_without_reply":true`)
+		} else {
+			buf.WriteString(`"allow_sending_without_reply":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ReplyMarkup != nil {
+		if true {
+			buf.WriteString(`"reply_markup":`)
+			/* Interface types must use runtime reflection. type=model.ReplyMarkup kind=interface */
+			err = buf.Encode(j.ReplyMarkup)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtSendDocumentRequestbase = iota
+	ffjtSendDocumentRequestnosuchkey
+
+	ffjtSendDocumentRequestChatID
+
+	ffjtSendDocumentRequestDocument
+
+	ffjtSendDocumentRequestThumb
+
+	ffjtSendDocumentRequestCaption
+
+	ffjtSendDocumentRequestParseMode
+
+	ffjtSendDocumentRequestCaptionEntities
+
+	ffjtSendDocumentRequestDisableContentTypeDetection
+
+	ffjtSendDocumentRequestDisableNotification
+
+	ffjtSendDocumentRequestProtectContent
+
+	ffjtSendDocumentRequestReplyToMessageID
+
+	ffjtSendDocumentRequestAllowSendingWithoutReply
+
+	ffjtSendDocumentRequestReplyMarkup
+)
+
+var ffjKeySendDocumentRequestChatID = []byte("chat_id")
+
+var ffjKeySendDocumentRequestDocument = []byte("document")
+
+var ffjKeySendDocumentRequestThumb = []byte("thumb")
+
+var ffjKeySendDocumentRequestCaption = []byte("caption")
+
+var ffjKeySendDocumentRequestParseMode = []byte("parse_mode")
+
+var ffjKeySendDocumentRequestCaptionEntities = []byte("caption_entities")
+
+var ffjKeySendDocumentRequestDisableContentTypeDetection = []byte("disable_content_type_detection")
+
+var ffjKeySendDocumentRequestDisableNotification = []byte("disable_notification")
+
+var ffjKeySendDocumentRequestProtectContent = []byte("protect_content")
+
+var ffjKeySendDocumentRequestReplyToMessageID = []byte("reply_to_message_id")
+
+var ffjKeySendDocumentRequestAllowSendingWithoutReply = []byte("allow_sending_without_reply")
+
+var ffjKeySendDocumentRequestReplyMarkup = []byte("reply_markup")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *SendDocumentRequest) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *SendDocumentRequest) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtSendDocumentRequestbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_left_bracket {
+				wantedTok = fflib.FFTok_left_bracket
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_key
+			continue
+
+		case fflib.FFParse_after_value:
+			if tok == fflib.FFTok_comma {
+				state = fflib.FFParse_want_key
+			} else if tok == fflib.FFTok_right_bracket {
+				goto done
+			} else {
+				wantedTok = fflib.FFTok_comma
+				goto wrongtokenerror
+			}
+
+		case fflib.FFParse_want_key:
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtSendDocumentRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeySendDocumentRequestAllowSendingWithoutReply, kn) {
+						currentKey = ffjtSendDocumentRequestAllowSendingWithoutReply
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'c':
+
+					if bytes.Equal(ffjKeySendDocumentRequestChatID, kn) {
+						currentKey = ffjtSendDocumentRequestChatID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendDocumentRequestCaption, kn) {
+						currentKey = ffjtSendDocumentRequestCaption
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendDocumentRequestCaptionEntities, kn) {
+						currentKey = ffjtSendDocumentRequestCaptionEntities
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'd':
+
+					if bytes.Equal(ffjKeySendDocumentRequestDocument, kn) {
+						currentKey = ffjtSendDocumentRequestDocument
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendDocumentRequestDisableContentTypeDetection, kn) {
+						currentKey = ffjtSendDocumentRequestDisableContentTypeDetection
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendDocumentRequestDisableNotification, kn) {
+						currentKey = ffjtSendDocumentRequestDisableNotification
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'p':
+
+					if bytes.Equal(ffjKeySendDocumentRequestParseMode, kn) {
+						currentKey = ffjtSendDocumentRequestParseMode
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendDocumentRequestProtectContent, kn) {
+						currentKey = ffjtSendDocumentRequestProtectContent
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'r':
+
+					if bytes.Equal(ffjKeySendDocumentRequestReplyToMessageID, kn) {
+						currentKey = ffjtSendDocumentRequestReplyToMessageID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendDocumentRequestReplyMarkup, kn) {
+						currentKey = ffjtSendDocumentRequestReplyMarkup
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 't':
+
+					if bytes.Equal(ffjKeySendDocumentRequestThumb, kn) {
+						currentKey = ffjtSendDocumentRequestThumb
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendDocumentRequestReplyMarkup, kn) {
+					currentKey = ffjtSendDocumentRequestReplyMarkup
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendDocumentRequestAllowSendingWithoutReply, kn) {
+					currentKey = ffjtSendDocumentRequestAllowSendingWithoutReply
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendDocumentRequestReplyToMessageID, kn) {
+					currentKey = ffjtSendDocumentRequestReplyToMessageID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendDocumentRequestProtectContent, kn) {
+					currentKey = ffjtSendDocumentRequestProtectContent
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendDocumentRequestDisableNotification, kn) {
+					currentKey = ffjtSendDocumentRequestDisableNotification
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendDocumentRequestDisableContentTypeDetection, kn) {
+					currentKey = ffjtSendDocumentRequestDisableContentTypeDetection
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendDocumentRequestCaptionEntities, kn) {
+					currentKey = ffjtSendDocumentRequestCaptionEntities
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendDocumentRequestParseMode, kn) {
+					currentKey = ffjtSendDocumentRequestParseMode
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendDocumentRequestCaption, kn) {
+					currentKey = ffjtSendDocumentRequestCaption
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendDocumentRequestThumb, kn) {
+					currentKey = ffjtSendDocumentRequestThumb
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendDocumentRequestDocument, kn) {
+					currentKey = ffjtSendDocumentRequestDocument
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendDocumentRequestChatID, kn) {
+					currentKey = ffjtSendDocumentRequestChatID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtSendDocumentRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtSendDocumentRequestChatID:
+					goto handle_ChatID
+
+				case ffjtSendDocumentRequestDocument:
+					goto handle_Document
+
+				case ffjtSendDocumentRequestThumb:
+					goto handle_Thumb
+
+				case ffjtSendDocumentRequestCaption:
+					goto handle_Caption
+
+				case ffjtSendDocumentRequestParseMode:
+					goto handle_ParseMode
+
+				case ffjtSendDocumentRequestCaptionEntities:
+					goto handle_CaptionEntities
+
+				case ffjtSendDocumentRequestDisableContentTypeDetection:
+					goto handle_DisableContentTypeDetection
+
+				case ffjtSendDocumentRequestDisableNotification:
+					goto handle_DisableNotification
+
+				case ffjtSendDocumentRequestProtectContent:
+					goto handle_ProtectContent
+
+				case ffjtSendDocumentRequestReplyToMessageID:
+					goto handle_ReplyToMessageID
+
+				case ffjtSendDocumentRequestAllowSendingWithoutReply:
+					goto handle_AllowSendingWithoutReply
+
+				case ffjtSendDocumentRequestReplyMarkup:
+					goto handle_ReplyMarkup
+
+				case ffjtSendDocumentRequestnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_ChatID:
+
+	/* handler: j.ChatID type=model.IntOrStr kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.IntOrStr kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ChatID)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Document:
+
+	/* handler: j.Document type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.Document = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Thumb:
+
+	/* handler: j.Thumb type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.Thumb = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Caption:
+
+	/* handler: j.Caption type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.Caption = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ParseMode:
+
+	/* handler: j.ParseMode type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.ParseMode = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_CaptionEntities:
+
+	/* handler: j.CaptionEntities type=[]*model.MessageEntity kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for ", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.CaptionEntities = nil
+		} else {
+
+			j.CaptionEntities = []*MessageEntity{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJCaptionEntities *MessageEntity
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib.FFTok_right_brace {
+					break
+				}
+
+				if tok == fflib.FFTok_comma {
+					if wantVal == true {
+						// TODO(pquerna): this isn't an ideal error message, this handles
+						// things like [,,,] as an array value.
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJCaptionEntities type=*model.MessageEntity kind=ptr quoted=false*/
+
+				{
+					if tok == fflib.FFTok_null {
+
+						tmpJCaptionEntities = nil
+
+					} else {
+
+						if tmpJCaptionEntities == nil {
+							tmpJCaptionEntities = new(MessageEntity)
+						}
+
+						err = tmpJCaptionEntities.UnmarshalJSONFFLexer(fs, fflib.FFParse_want_key)
+						if err != nil {
+							return err
+						}
+					}
+					state = fflib.FFParse_after_value
+				}
+
+				j.CaptionEntities = append(j.CaptionEntities, tmpJCaptionEntities)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_DisableContentTypeDetection:
+
+	/* handler: j.DisableContentTypeDetection type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.DisableContentTypeDetection = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.DisableContentTypeDetection = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_DisableNotification:
+
+	/* handler: j.DisableNotification type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.DisableNotification = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.DisableNotification = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ProtectContent:
+
+	/* handler: j.ProtectContent type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.ProtectContent = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.ProtectContent = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ReplyToMessageID:
+
+	/* handler: j.ReplyToMessageID type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.ReplyToMessageID = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_AllowSendingWithoutReply:
+
+	/* handler: j.AllowSendingWithoutReply type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.AllowSendingWithoutReply = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.AllowSendingWithoutReply = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ReplyMarkup:
+
+	/* handler: j.ReplyMarkup type=model.ReplyMarkup kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.ReplyMarkup kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ReplyMarkup)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+wantedvalue:
+	return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+wrongtokenerror:
+	return fs.WrapErr(fmt.Errorf("ffjson: wanted token: %v, but got token: %v output=%s", wantedTok, tok, fs.Output.String()))
+tokerror:
+	if fs.BigError != nil {
+		return fs.WrapErr(fs.BigError)
+	}
+	err = fs.Error.ToError()
+	if err != nil {
+		return fs.WrapErr(err)
+	}
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
+
+// MarshalJSON marshal bytes to json - template
+func (j *SendLocationRequest) MarshalJSON() ([]byte, error) {
+	var buf fflib.Buffer
+	if j == nil {
+		buf.WriteString("null")
+		return buf.Bytes(), nil
+	}
+	err := j.MarshalJSONBuf(&buf)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// MarshalJSONBuf marshal buff to json - template
+func (j *SendLocationRequest) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{ "chat_id":`)
+	/* Interface types must use runtime reflection. type=model.IntOrStr kind=interface */
+	err = buf.Encode(j.ChatID)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"latitude":`)
+	fflib.AppendFloat(buf, float64(j.Latitude), 'g', -1, 64)
+	buf.WriteString(`,"longitude":`)
+	fflib.AppendFloat(buf, float64(j.Longitude), 'g', -1, 64)
+	buf.WriteByte(',')
+	if j.HorizontalAccuracy != 0 {
+		buf.WriteString(`"horizontal_accuracy":`)
+		fflib.AppendFloat(buf, float64(j.HorizontalAccuracy), 'g', -1, 64)
+		buf.WriteByte(',')
+	}
+	if j.LivePeriod != 0 {
+		buf.WriteString(`"live_period":`)
+		fflib.FormatBits2(buf, uint64(j.LivePeriod), 10, j.LivePeriod < 0)
+		buf.WriteByte(',')
+	}
+	if j.Heading != 0 {
+		buf.WriteString(`"heading":`)
+		fflib.FormatBits2(buf, uint64(j.Heading), 10, j.Heading < 0)
+		buf.WriteByte(',')
+	}
+	if j.ProximityAlertRadius != 0 {
+		buf.WriteString(`"proximity_alert_radius":`)
+		fflib.FormatBits2(buf, uint64(j.ProximityAlertRadius), 10, j.ProximityAlertRadius < 0)
+		buf.WriteByte(',')
+	}
+	if j.DisableNotification != false {
+		if j.DisableNotification {
+			buf.WriteString(`"disable_notification":true`)
+		} else {
+			buf.WriteString(`"disable_notification":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ProtectContent != false {
+		if j.ProtectContent {
+			buf.WriteString(`"protect_content":true`)
+		} else {
+			buf.WriteString(`"protect_content":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ReplyToMessageID != 0 {
+		buf.WriteString(`"reply_to_message_id":`)
+		fflib.FormatBits2(buf, uint64(j.ReplyToMessageID), 10, j.ReplyToMessageID < 0)
+		buf.WriteByte(',')
+	}
+	if j.AllowSendingWithoutReply != false {
+		if j.AllowSendingWithoutReply {
+			buf.WriteString(`"allow_sending_without_reply":true`)
+		} else {
+			buf.WriteString(`"allow_sending_without_reply":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ReplyMarkup != nil {
+		if true {
+			buf.WriteString(`"reply_markup":`)
+			/* Interface types must use runtime reflection. type=model.ReplyMarkup kind=interface */
+			err = buf.Encode(j.ReplyMarkup)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtSendLocationRequestbase = iota
+	ffjtSendLocationRequestnosuchkey
+
+	ffjtSendLocationRequestChatID
+
+	ffjtSendLocationRequestLatitude
+
+	ffjtSendLocationRequestLongitude
+
+	ffjtSendLocationRequestHorizontalAccuracy
+
+	ffjtSendLocationRequestLivePeriod
+
+	ffjtSendLocationRequestHeading
+
+	ffjtSendLocationRequestProximityAlertRadius
+
+	ffjtSendLocationRequestDisableNotification
+
+	ffjtSendLocationRequestProtectContent
+
+	ffjtSendLocationRequestReplyToMessageID
+
+	ffjtSendLocationRequestAllowSendingWithoutReply
+
+	ffjtSendLocationRequestReplyMarkup
+)
+
+var ffjKeySendLocationRequestChatID = []byte("chat_id")
+
+var ffjKeySendLocationRequestLatitude = []byte("latitude")
+
+var ffjKeySendLocationRequestLongitude = []byte("longitude")
+
+var ffjKeySendLocationRequestHorizontalAccuracy = []byte("horizontal_accuracy")
+
+var ffjKeySendLocationRequestLivePeriod = []byte("live_period")
+
+var ffjKeySendLocationRequestHeading = []byte("heading")
+
+var ffjKeySendLocationRequestProximityAlertRadius = []byte("proximity_alert_radius")
+
+var ffjKeySendLocationRequestDisableNotification = []byte("disable_notification")
+
+var ffjKeySendLocationRequestProtectContent = []byte("protect_content")
+
+var ffjKeySendLocationRequestReplyToMessageID = []byte("reply_to_message_id")
+
+var ffjKeySendLocationRequestAllowSendingWithoutReply = []byte("allow_sending_without_reply")
+
+var ffjKeySendLocationRequestReplyMarkup = []byte("reply_markup")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *SendLocationRequest) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *SendLocationRequest) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtSendLocationRequestbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_left_bracket {
+				wantedTok = fflib.FFTok_left_bracket
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_key
+			continue
+
+		case fflib.FFParse_after_value:
+			if tok == fflib.FFTok_comma {
+				state = fflib.FFParse_want_key
+			} else if tok == fflib.FFTok_right_bracket {
+				goto done
+			} else {
+				wantedTok = fflib.FFTok_comma
+				goto wrongtokenerror
+			}
+
+		case fflib.FFParse_want_key:
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtSendLocationRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeySendLocationRequestAllowSendingWithoutReply, kn) {
+						currentKey = ffjtSendLocationRequestAllowSendingWithoutReply
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'c':
+
+					if bytes.Equal(ffjKeySendLocationRequestChatID, kn) {
+						currentKey = ffjtSendLocationRequestChatID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'd':
+
+					if bytes.Equal(ffjKeySendLocationRequestDisableNotification, kn) {
+						currentKey = ffjtSendLocationRequestDisableNotification
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'h':
+
+					if bytes.Equal(ffjKeySendLocationRequestHorizontalAccuracy, kn) {
+						currentKey = ffjtSendLocationRequestHorizontalAccuracy
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendLocationRequestHeading, kn) {
+						currentKey = ffjtSendLocationRequestHeading
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'l':
+
+					if bytes.Equal(ffjKeySendLocationRequestLatitude, kn) {
+						currentKey = ffjtSendLocationRequestLatitude
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendLocationRequestLongitude, kn) {
+						currentKey = ffjtSendLocationRequestLongitude
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendLocationRequestLivePeriod, kn) {
+						currentKey = ffjtSendLocationRequestLivePeriod
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'p':
+
+					if bytes.Equal(ffjKeySendLocationRequestProximityAlertRadius, kn) {
+						currentKey = ffjtSendLocationRequestProximityAlertRadius
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendLocationRequestProtectContent, kn) {
+						currentKey = ffjtSendLocationRequestProtectContent
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'r':
+
+					if bytes.Equal(ffjKeySendLocationRequestReplyToMessageID, kn) {
+						currentKey = ffjtSendLocationRequestReplyToMessageID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendLocationRequestReplyMarkup, kn) {
+						currentKey = ffjtSendLocationRequestReplyMarkup
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendLocationRequestReplyMarkup, kn) {
+					currentKey = ffjtSendLocationRequestReplyMarkup
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendLocationRequestAllowSendingWithoutReply, kn) {
+					currentKey = ffjtSendLocationRequestAllowSendingWithoutReply
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendLocationRequestReplyToMessageID, kn) {
+					currentKey = ffjtSendLocationRequestReplyToMessageID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendLocationRequestProtectContent, kn) {
+					currentKey = ffjtSendLocationRequestProtectContent
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendLocationRequestDisableNotification, kn) {
+					currentKey = ffjtSendLocationRequestDisableNotification
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendLocationRequestProximityAlertRadius, kn) {
+					currentKey = ffjtSendLocationRequestProximityAlertRadius
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendLocationRequestHeading, kn) {
+					currentKey = ffjtSendLocationRequestHeading
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendLocationRequestLivePeriod, kn) {
+					currentKey = ffjtSendLocationRequestLivePeriod
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendLocationRequestHorizontalAccuracy, kn) {
+					currentKey = ffjtSendLocationRequestHorizontalAccuracy
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendLocationRequestLongitude, kn) {
+					currentKey = ffjtSendLocationRequestLongitude
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendLocationRequestLatitude, kn) {
+					currentKey = ffjtSendLocationRequestLatitude
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendLocationRequestChatID, kn) {
+					currentKey = ffjtSendLocationRequestChatID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtSendLocationRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtSendLocationRequestChatID:
+					goto handle_ChatID
+
+				case ffjtSendLocationRequestLatitude:
+					goto handle_Latitude
+
+				case ffjtSendLocationRequestLongitude:
+					goto handle_Longitude
+
+				case ffjtSendLocationRequestHorizontalAccuracy:
+					goto handle_HorizontalAccuracy
+
+				case ffjtSendLocationRequestLivePeriod:
+					goto handle_LivePeriod
+
+				case ffjtSendLocationRequestHeading:
+					goto handle_Heading
+
+				case ffjtSendLocationRequestProximityAlertRadius:
+					goto handle_ProximityAlertRadius
+
+				case ffjtSendLocationRequestDisableNotification:
+					goto handle_DisableNotification
+
+				case ffjtSendLocationRequestProtectContent:
+					goto handle_ProtectContent
+
+				case ffjtSendLocationRequestReplyToMessageID:
+					goto handle_ReplyToMessageID
+
+				case ffjtSendLocationRequestAllowSendingWithoutReply:
+					goto handle_AllowSendingWithoutReply
+
+				case ffjtSendLocationRequestReplyMarkup:
+					goto handle_ReplyMarkup
+
+				case ffjtSendLocationRequestnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_ChatID:
+
+	/* handler: j.ChatID type=model.IntOrStr kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.IntOrStr kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ChatID)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Latitude:
+
+	/* handler: j.Latitude type=float64 kind=float64 quoted=false*/
+
+	{
+		if tok != fflib.FFTok_double && tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for float64", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseFloat(fs.Output.Bytes(), 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.Latitude = float64(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Longitude:
+
+	/* handler: j.Longitude type=float64 kind=float64 quoted=false*/
+
+	{
+		if tok != fflib.FFTok_double && tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for float64", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseFloat(fs.Output.Bytes(), 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.Longitude = float64(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_HorizontalAccuracy:
+
+	/* handler: j.HorizontalAccuracy type=float64 kind=float64 quoted=false*/
+
+	{
+		if tok != fflib.FFTok_double && tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for float64", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseFloat(fs.Output.Bytes(), 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.HorizontalAccuracy = float64(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_LivePeriod:
+
+	/* handler: j.LivePeriod type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.LivePeriod = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Heading:
+
+	/* handler: j.Heading type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.Heading = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ProximityAlertRadius:
+
+	/* handler: j.ProximityAlertRadius type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.ProximityAlertRadius = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_DisableNotification:
+
+	/* handler: j.DisableNotification type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.DisableNotification = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.DisableNotification = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ProtectContent:
+
+	/* handler: j.ProtectContent type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.ProtectContent = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.ProtectContent = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ReplyToMessageID:
+
+	/* handler: j.ReplyToMessageID type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.ReplyToMessageID = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_AllowSendingWithoutReply:
+
+	/* handler: j.AllowSendingWithoutReply type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.AllowSendingWithoutReply = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.AllowSendingWithoutReply = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ReplyMarkup:
+
+	/* handler: j.ReplyMarkup type=model.ReplyMarkup kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.ReplyMarkup kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ReplyMarkup)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+wantedvalue:
+	return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+wrongtokenerror:
+	return fs.WrapErr(fmt.Errorf("ffjson: wanted token: %v, but got token: %v output=%s", wantedTok, tok, fs.Output.String()))
+tokerror:
+	if fs.BigError != nil {
+		return fs.WrapErr(fs.BigError)
+	}
+	err = fs.Error.ToError()
+	if err != nil {
+		return fs.WrapErr(err)
+	}
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
+
+// MarshalJSON marshal bytes to json - template
 func (j *SendMessageRequest) MarshalJSON() ([]byte, error) {
 	var buf fflib.Buffer
 	if j == nil {
