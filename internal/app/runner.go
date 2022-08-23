@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/DmytroTHR/telegabot/pkg/helpers"
 	"github.com/DmytroTHR/telegabot/pkg/model"
@@ -81,33 +80,55 @@ func (app *Application) Run() error {
 		//}
 		//_, err = bot.SendLocation(ctx, msgLoc)
 
-		//SEND DICE
-		msgDice, err := telega.NewDiceRequest(msg.Chat.ID, uint(helpers.RandomBetween(0, 2)))
-		//can be one of - model.DiceOneToSixtyFour (2), model.DiceOneToFive (1), model.DiceOneToSix (0)
-		if err != nil {
-			return err
+		////SEND DICE
+		//msgDice, err := telega.NewDiceRequest(msg.Chat.ID, uint(helpers.RandomBetween(0, 2)))
+		////can be one of - model.DiceOneToSixtyFour (2), model.DiceOneToFive (1), model.DiceOneToSix (0)
+		//if err != nil {
+		//	return err
+		//}
+		//got, err := bot.SendDice(ctx, msgDice)
+		//if err != nil {
+		//	return err
+		//}
+		////SEND TYPING ACTION TO CHAT
+		//msgAct, err := telega.NewChatActionRequest(msg.Chat.ID, model.ActionTyping)
+		//if err != nil {
+		//	return err
+		//}
+		//_, err = bot.SendChatAction(ctx, msgAct)
+		//if err != nil {
+		//	return err
+		//}
+		//time.Sleep(3 * time.Second)
+		////GET BACK DICE RESULT
+		//response := fmt.Sprintf(`Your result is <span class="tg-spoiler">%d</span> points`, got.Dice.Value)
+		//msgResp, err := telega.NewMessageSimple(msg.Chat.ID, response)
+		//if err != nil {
+		//	return err
+		//}
+		//_, err = bot.SendMessage(ctx, msgResp)
+
+		//GET & DOWNLOAD FILE
+		if msg.Document != nil {
+			msgAct, _ := telega.NewChatActionRequest(msg.Chat.ID, model.ActionUploadDocument)
+			bot.SendChatAction(ctx, msgAct)
+
+			gotFile, err := bot.GetFile(msg.Document.FileID)
+			if err != nil {
+				return err
+			}
+
+			pathToSave := "./testdata/" + gotFile.FilePath
+			linkToDownload, err := bot.CompleteFileLink(gotFile.FilePath)
+			if err != nil {
+				return err
+			}
+			downlFile, err := helpers.DownloadFile(ctx, linkToDownload, pathToSave)
+			if err != nil {
+				return err
+			}
+			log.Println(downlFile)
 		}
-		got, err := bot.SendDice(ctx, msgDice)
-		if err != nil {
-			return err
-		}
-		//SEND TYPING ACTION TO CHAT
-		msgAct, err := telega.NewChatActionRequest(msg.Chat.ID, model.ActionTyping)
-		if err != nil {
-			return err
-		}
-		_, err = bot.SendChatAction(ctx, msgAct)
-		if err != nil {
-			return err
-		}
-		time.Sleep(3 * time.Second)
-		//GET BACK DICE RESULT
-		response := fmt.Sprintf(`Your result is <span class="tg-spoiler">%d</span> points`, got.Dice.Value)
-		msgResp, err := telega.NewMessageSimple(msg.Chat.ID, response)
-		if err != nil {
-			return err
-		}
-		_, err = bot.SendMessage(ctx, msgResp)
 
 		if err != nil {
 			return err

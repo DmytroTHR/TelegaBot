@@ -48,3 +48,8 @@ func (conf *Config) FullAPIPath(method string) (*url.URL, error) {
 	log.Debugln("Prepare to make request on:", method)
 	return url.Parse(fmt.Sprintf("%sbot%s/%s", conf.apiHost, conf.apiToken, method))
 }
+
+func (conf *Config) FullAPIFilePath(pathToFile string) (*url.URL, error) {
+	log.Debugln("Prepare to make request on:", pathToFile)
+	return url.Parse(fmt.Sprintf("%sfile/bot%s/%s", conf.apiHost, conf.apiToken, pathToFile))
+}

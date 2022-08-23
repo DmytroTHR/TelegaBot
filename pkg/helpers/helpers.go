@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -43,6 +44,10 @@ func ReadFromRequest(request *http.Request) ([]byte, error) {
 		return nil, WrapError("receive response", err)
 	}
 	defer res.Body.Close()
+	if res.StatusCode != http.StatusOK {
+		return nil, Error(fmt.Sprintf("http %s - result status is not 200-OK. %d-%s",
+			request.Method, res.StatusCode, http.StatusText(res.StatusCode)))
+	}
 
 	if err != nil {
 		var buf []byte
@@ -97,6 +102,30 @@ func MultipartDataUpload(inputFiles, otherOptions map[string]string) (*bytes.Buf
 	}
 
 	return body, writer.FormDataContentType(), nil
+}
+
+func DownloadFile(ctx context.Context, fileLink, savePath string) (*os.File, error) {
+	resFile, err := os.Create(savePath)
+	if err != nil {
+		return nil, WrapError("create file to store result", err)
+	}
+	defer resFile.Close()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fileLink, &bytes.Buffer{})
+	if err != nil {
+		return nil, WrapError("download file prepare request", err)
+	}
+	fileData, err := ReadFromRequest(req)
+	if err != nil {
+		return nil, WrapError("download file make request", err)
+	}
+
+	_, err = io.Copy(resFile, bytes.NewReader(fileData))
+	if err != nil {
+		return nil, WrapError("save result file", err)
+	}
+
+	return resFile, nil
 }
 
 func UnmarshalToKeyValueString(body []byte) map[string]string {

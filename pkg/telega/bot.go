@@ -1,6 +1,7 @@
 package telega
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
@@ -64,7 +65,8 @@ func (b *Bot) GetAPIResponse(ctx context.Context, methodCalled, httpMethod strin
 
 func (b *Bot) fillInfo() error {
 	methodStr := fmt.Sprintf("method <%s>", model.MethodGetMe)
-	data, err := b.GetAPIResponse(context.Background(), model.MethodGetMe, http.MethodGet, nil, nil)
+	data, err := b.GetAPIResponse(context.Background(), model.MethodGetMe, http.MethodGet,
+		nil, helpers.DefaultHeader())
 	if err != nil {
 		return helpers.WrapError(methodStr, err)
 	}
@@ -81,4 +83,42 @@ func (b *Bot) fillInfo() error {
 	b.Username = response.Result.Username
 
 	return nil
+}
+
+func (b *Bot) GetFile(fileID string) (*model.File, error) {
+	methodStr := fmt.Sprintf("method <%s>", model.MethodGetFile)
+	body, err := ffjson.Marshal(struct {
+		FileID string `json:"file_id"`
+	}{FileID: fileID})
+	if err != nil {
+		return nil, helpers.WrapError(methodStr, err)
+	}
+	data, err := b.GetAPIResponse(context.Background(), model.MethodGetFile, http.MethodGet,
+		bytes.NewReader(body), helpers.DefaultHeader())
+	if err != nil {
+		return nil, helpers.WrapError(methodStr, err)
+	}
+
+	response := &struct {
+		OK     bool
+		Result *model.File
+	}{}
+	err = ffjson.Unmarshal(data, response)
+	if err != nil {
+		return nil, helpers.WrapError(methodStr, helpers.WrapError("unmarshal result", err))
+	}
+	if !response.OK {
+		return nil, helpers.WrapError(methodStr, helpers.Error("false API request result"))
+	}
+
+	return response.Result, nil
+}
+
+func (b *Bot) CompleteFileLink(linkPath string) (string, error) {
+	url, err := b.Config.FullAPIFilePath(linkPath)
+	if err != nil {
+		return "", helpers.WrapError(fmt.Sprintf("complete link for %s", linkPath), err)
+	}
+
+	return url.String(), nil
 }

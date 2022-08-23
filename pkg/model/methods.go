@@ -12,6 +12,7 @@ const (
 	MethodSendLocation   = "sendLocation"
 	MethodSendDice       = "sendDice"
 	MethodSendChatAction = "sendChatAction"
+	MethodGetFile        = "getFile"
 )
 
 const (
