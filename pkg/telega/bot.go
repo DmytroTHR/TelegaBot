@@ -85,7 +85,7 @@ func (b *Bot) fillInfo() error {
 	return nil
 }
 
-func (b *Bot) GetFile(fileID string) (*model.File, error) {
+func (b *Bot) GetFile(ctx context.Context, fileID string) (*model.File, error) {
 	methodStr := fmt.Sprintf("method <%s>", model.MethodGetFile)
 	body, err := ffjson.Marshal(struct {
 		FileID string `json:"file_id"`
@@ -93,7 +93,7 @@ func (b *Bot) GetFile(fileID string) (*model.File, error) {
 	if err != nil {
 		return nil, helpers.WrapError(methodStr, err)
 	}
-	data, err := b.GetAPIResponse(context.Background(), model.MethodGetFile, http.MethodGet,
+	data, err := b.GetAPIResponse(ctx, model.MethodGetFile, http.MethodGet,
 		bytes.NewReader(body), helpers.DefaultHeader())
 	if err != nil {
 		return nil, helpers.WrapError(methodStr, err)

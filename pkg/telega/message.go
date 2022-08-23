@@ -119,6 +119,17 @@ func (b *Bot) SendDice(ctx context.Context, diceRequest *model.SendDiceRequest) 
 	return b.messageResultFor(ctx, model.MethodSendDice, bytes.NewReader(body), helpers.DefaultHeader())
 }
 
+func (b *Bot) SendPoll(ctx context.Context, pollRequest *model.SendPollRequest) (*model.Message, error) {
+	methodStr := fmt.Sprintf("method <%s>", model.MethodSendPoll)
+
+	body, err := ffjson.Marshal(pollRequest)
+	if err != nil {
+		return nil, helpers.WrapError(methodStr, helpers.WrapError("marshal request", err))
+	}
+
+	return b.messageResultFor(ctx, model.MethodSendPoll, bytes.NewReader(body), helpers.DefaultHeader())
+}
+
 func (b *Bot) sendData(ctx context.Context, request model.DataSender, method string) (*model.Message, error) {
 	methodStr := fmt.Sprintf("method <%s>", method)
 

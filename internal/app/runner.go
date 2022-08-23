@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/DmytroTHR/telegabot/pkg/helpers"
-	"github.com/DmytroTHR/telegabot/pkg/model"
 	"github.com/DmytroTHR/telegabot/pkg/telega"
 )
 
@@ -108,27 +107,40 @@ func (app *Application) Run() error {
 		//}
 		//_, err = bot.SendMessage(ctx, msgResp)
 
-		//GET & DOWNLOAD FILE
-		if msg.Document != nil {
-			msgAct, _ := telega.NewChatActionRequest(msg.Chat.ID, model.ActionUploadDocument)
-			bot.SendChatAction(ctx, msgAct)
+		////GET & DOWNLOAD FILE
+		//if msg.Document != nil {
+		//	msgAct, _ := telega.NewChatActionRequest(msg.Chat.ID, model.ActionUploadDocument)
+		//	bot.SendChatAction(ctx, msgAct)
+		//
+		//	gotFile, err := bot.GetFile(ctx, msg.Document.FileID)
+		//	if err != nil {
+		//		return err
+		//	}
+		//
+		//	pathToSave := "./testdata/" + gotFile.FilePath
+		//	linkToDownload, err := bot.CompleteFileLink(gotFile.FilePath)
+		//	if err != nil {
+		//		return err
+		//	}
+		//	downlFile, err := helpers.DownloadFile(ctx, linkToDownload, pathToSave)
+		//	if err != nil {
+		//		return err
+		//	}
+		//	log.Println(downlFile)
+		//}
 
-			gotFile, err := bot.GetFile(msg.Document.FileID)
-			if err != nil {
-				return err
-			}
-
-			pathToSave := "./testdata/" + gotFile.FilePath
-			linkToDownload, err := bot.CompleteFileLink(gotFile.FilePath)
-			if err != nil {
-				return err
-			}
-			downlFile, err := helpers.DownloadFile(ctx, linkToDownload, pathToSave)
-			if err != nil {
-				return err
-			}
-			log.Println(downlFile)
+		//SEND POLL
+		question := "What color do you like the most?"
+		answers := []string{
+			"🍓 red",
+			"🍏 green",
+			"🫐 blue",
 		}
+		msgPoll, err := telega.NewPollRequest(msg.Chat.ID, question, answers)
+		if err != nil {
+			return err
+		}
+		_, err = bot.SendPoll(ctx, msgPoll)
 
 		if err != nil {
 			return err

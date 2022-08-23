@@ -56,6 +56,27 @@ type SendChatActionRequest struct {
 	Action ChatActioner `json:"action"`
 }
 
+type SendPollRequest struct {
+	ChatID                   IntOrStr         `json:"chat_id"`
+	Question                 string           `json:"question"`
+	Options                  []string         `json:"options"`
+	IsAnonymous              bool             `json:"is_anonymous,omitempty"`
+	Type                     string           `json:"type,omitempty"`
+	AllowsMultipleAnswers    bool             `json:"allows_multiple_answers,omitempty"`
+	CorrectOptionID          int              `json:"correct_option_id,omitempty"`
+	Explanation              string           `json:"explanation,omitempty"`
+	ExplanationParseMode     string           `json:"explanation_parse_mode,omitempty"`
+	ExplanationEntities      []*MessageEntity `json:"explanation_entities,omitempty"`
+	OpenPeriod               int              `json:"open_period,omitempty"`
+	CloseDate                int              `json:"close_date,omitempty"`
+	IsClosed                 bool             `json:"is_closed,omitempty"`
+	DisableNotification      bool             `json:"disable_notification,omitempty"`
+	ProtectContent           bool             `json:"protect_content,omitempty"`
+	ReplyToMessageID         int              `json:"reply_to_message_id,omitempty"`
+	AllowSendingWithoutReply bool             `json:"allow_sending_without_reply,omitempty"`
+	ReplyMarkup              *ReplyMarkup     `json:"reply_markup,omitempty"`
+}
+
 type DataSender interface {
 	dataField() string
 }

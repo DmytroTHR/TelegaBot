@@ -80,6 +80,19 @@ func NewDiceRequest(chatID any, diceEmojiType uint) (*model.SendDiceRequest, err
 	}, nil
 }
 
+func NewPollRequest(chatID any, question string, options []string) (*model.SendPollRequest, error) {
+	id, err := ChatIDFrom(chatID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.SendPollRequest{
+		ChatID:   id,
+		Question: question,
+		Options:  options,
+	}, nil
+}
+
 func NewPhotoRequest(chatID any, pathToFile string) (*model.SendPhotoRequest, error) {
 	id, err := ChatIDFrom(chatID)
 	if err != nil {

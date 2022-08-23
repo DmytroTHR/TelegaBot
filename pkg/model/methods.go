@@ -3,8 +3,10 @@ package model
 import "fmt"
 
 const (
-	MethodGetMe          = "getMe"
-	MethodGetUpdates     = "getUpdates"
+	MethodGetMe      = "getMe"
+	MethodGetUpdates = "getUpdates"
+	MethodGetFile    = "getFile"
+
 	MethodSendMessage    = "sendMessage"
 	MethodSendPhoto      = "sendPhoto"
 	MethodSendDocument   = "sendDocument"
@@ -12,7 +14,7 @@ const (
 	MethodSendLocation   = "sendLocation"
 	MethodSendDice       = "sendDice"
 	MethodSendChatAction = "sendChatAction"
-	MethodGetFile        = "getFile"
+	MethodSendPoll       = "sendPoll"
 )
 
 const (
