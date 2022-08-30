@@ -8019,6 +8019,1272 @@ done:
 }
 
 // MarshalJSON marshal bytes to json - template
+func (j *SendPollRequest) MarshalJSON() ([]byte, error) {
+	var buf fflib.Buffer
+	if j == nil {
+		buf.WriteString("null")
+		return buf.Bytes(), nil
+	}
+	err := j.MarshalJSONBuf(&buf)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// MarshalJSONBuf marshal buff to json - template
+func (j *SendPollRequest) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{ "chat_id":`)
+	/* Interface types must use runtime reflection. type=model.IntOrStr kind=interface */
+	err = buf.Encode(j.ChatID)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"question":`)
+	fflib.WriteJsonString(buf, string(j.Question))
+	buf.WriteString(`,"options":`)
+	if j.Options != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.Options {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+			fflib.WriteJsonString(buf, string(v))
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteByte(',')
+	if j.IsAnonymous != false {
+		if j.IsAnonymous {
+			buf.WriteString(`"is_anonymous":true`)
+		} else {
+			buf.WriteString(`"is_anonymous":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.Type != nil {
+		buf.WriteString(`"type":`)
+		/* Interface types must use runtime reflection. type=model.PollTyper kind=interface */
+		err = buf.Encode(j.Type)
+		if err != nil {
+			return err
+		}
+		buf.WriteByte(',')
+	}
+	if j.AllowsMultipleAnswers != false {
+		if j.AllowsMultipleAnswers {
+			buf.WriteString(`"allows_multiple_answers":true`)
+		} else {
+			buf.WriteString(`"allows_multiple_answers":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.CorrectOptionID != 0 {
+		buf.WriteString(`"correct_option_id":`)
+		fflib.FormatBits2(buf, uint64(j.CorrectOptionID), 10, j.CorrectOptionID < 0)
+		buf.WriteByte(',')
+	}
+	if len(j.Explanation) != 0 {
+		buf.WriteString(`"explanation":`)
+		fflib.WriteJsonString(buf, string(j.Explanation))
+		buf.WriteByte(',')
+	}
+	if len(j.ExplanationParseMode) != 0 {
+		buf.WriteString(`"explanation_parse_mode":`)
+		fflib.WriteJsonString(buf, string(j.ExplanationParseMode))
+		buf.WriteByte(',')
+	}
+	if len(j.ExplanationEntities) != 0 {
+		buf.WriteString(`"explanation_entities":`)
+		if j.ExplanationEntities != nil {
+			buf.WriteString(`[`)
+			for i, v := range j.ExplanationEntities {
+				if i != 0 {
+					buf.WriteString(`,`)
+				}
+
+				{
+
+					if v == nil {
+						buf.WriteString("null")
+					} else {
+
+						err = v.MarshalJSONBuf(buf)
+						if err != nil {
+							return err
+						}
+
+					}
+
+				}
+			}
+			buf.WriteString(`]`)
+		} else {
+			buf.WriteString(`null`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.OpenPeriod != 0 {
+		buf.WriteString(`"open_period":`)
+		fflib.FormatBits2(buf, uint64(j.OpenPeriod), 10, j.OpenPeriod < 0)
+		buf.WriteByte(',')
+	}
+	if j.CloseDate != 0 {
+		buf.WriteString(`"close_date":`)
+		fflib.FormatBits2(buf, uint64(j.CloseDate), 10, j.CloseDate < 0)
+		buf.WriteByte(',')
+	}
+	if j.IsClosed != false {
+		if j.IsClosed {
+			buf.WriteString(`"is_closed":true`)
+		} else {
+			buf.WriteString(`"is_closed":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.DisableNotification != false {
+		if j.DisableNotification {
+			buf.WriteString(`"disable_notification":true`)
+		} else {
+			buf.WriteString(`"disable_notification":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ProtectContent != false {
+		if j.ProtectContent {
+			buf.WriteString(`"protect_content":true`)
+		} else {
+			buf.WriteString(`"protect_content":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ReplyToMessageID != 0 {
+		buf.WriteString(`"reply_to_message_id":`)
+		fflib.FormatBits2(buf, uint64(j.ReplyToMessageID), 10, j.ReplyToMessageID < 0)
+		buf.WriteByte(',')
+	}
+	if j.AllowSendingWithoutReply != false {
+		if j.AllowSendingWithoutReply {
+			buf.WriteString(`"allow_sending_without_reply":true`)
+		} else {
+			buf.WriteString(`"allow_sending_without_reply":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ReplyMarkup != nil {
+		if true {
+			buf.WriteString(`"reply_markup":`)
+			/* Interface types must use runtime reflection. type=model.ReplyMarkup kind=interface */
+			err = buf.Encode(j.ReplyMarkup)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtSendPollRequestbase = iota
+	ffjtSendPollRequestnosuchkey
+
+	ffjtSendPollRequestChatID
+
+	ffjtSendPollRequestQuestion
+
+	ffjtSendPollRequestOptions
+
+	ffjtSendPollRequestIsAnonymous
+
+	ffjtSendPollRequestType
+
+	ffjtSendPollRequestAllowsMultipleAnswers
+
+	ffjtSendPollRequestCorrectOptionID
+
+	ffjtSendPollRequestExplanation
+
+	ffjtSendPollRequestExplanationParseMode
+
+	ffjtSendPollRequestExplanationEntities
+
+	ffjtSendPollRequestOpenPeriod
+
+	ffjtSendPollRequestCloseDate
+
+	ffjtSendPollRequestIsClosed
+
+	ffjtSendPollRequestDisableNotification
+
+	ffjtSendPollRequestProtectContent
+
+	ffjtSendPollRequestReplyToMessageID
+
+	ffjtSendPollRequestAllowSendingWithoutReply
+
+	ffjtSendPollRequestReplyMarkup
+)
+
+var ffjKeySendPollRequestChatID = []byte("chat_id")
+
+var ffjKeySendPollRequestQuestion = []byte("question")
+
+var ffjKeySendPollRequestOptions = []byte("options")
+
+var ffjKeySendPollRequestIsAnonymous = []byte("is_anonymous")
+
+var ffjKeySendPollRequestType = []byte("type")
+
+var ffjKeySendPollRequestAllowsMultipleAnswers = []byte("allows_multiple_answers")
+
+var ffjKeySendPollRequestCorrectOptionID = []byte("correct_option_id")
+
+var ffjKeySendPollRequestExplanation = []byte("explanation")
+
+var ffjKeySendPollRequestExplanationParseMode = []byte("explanation_parse_mode")
+
+var ffjKeySendPollRequestExplanationEntities = []byte("explanation_entities")
+
+var ffjKeySendPollRequestOpenPeriod = []byte("open_period")
+
+var ffjKeySendPollRequestCloseDate = []byte("close_date")
+
+var ffjKeySendPollRequestIsClosed = []byte("is_closed")
+
+var ffjKeySendPollRequestDisableNotification = []byte("disable_notification")
+
+var ffjKeySendPollRequestProtectContent = []byte("protect_content")
+
+var ffjKeySendPollRequestReplyToMessageID = []byte("reply_to_message_id")
+
+var ffjKeySendPollRequestAllowSendingWithoutReply = []byte("allow_sending_without_reply")
+
+var ffjKeySendPollRequestReplyMarkup = []byte("reply_markup")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *SendPollRequest) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *SendPollRequest) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtSendPollRequestbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_left_bracket {
+				wantedTok = fflib.FFTok_left_bracket
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_key
+			continue
+
+		case fflib.FFParse_after_value:
+			if tok == fflib.FFTok_comma {
+				state = fflib.FFParse_want_key
+			} else if tok == fflib.FFTok_right_bracket {
+				goto done
+			} else {
+				wantedTok = fflib.FFTok_comma
+				goto wrongtokenerror
+			}
+
+		case fflib.FFParse_want_key:
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtSendPollRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeySendPollRequestAllowsMultipleAnswers, kn) {
+						currentKey = ffjtSendPollRequestAllowsMultipleAnswers
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendPollRequestAllowSendingWithoutReply, kn) {
+						currentKey = ffjtSendPollRequestAllowSendingWithoutReply
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'c':
+
+					if bytes.Equal(ffjKeySendPollRequestChatID, kn) {
+						currentKey = ffjtSendPollRequestChatID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendPollRequestCorrectOptionID, kn) {
+						currentKey = ffjtSendPollRequestCorrectOptionID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendPollRequestCloseDate, kn) {
+						currentKey = ffjtSendPollRequestCloseDate
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'd':
+
+					if bytes.Equal(ffjKeySendPollRequestDisableNotification, kn) {
+						currentKey = ffjtSendPollRequestDisableNotification
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'e':
+
+					if bytes.Equal(ffjKeySendPollRequestExplanation, kn) {
+						currentKey = ffjtSendPollRequestExplanation
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendPollRequestExplanationParseMode, kn) {
+						currentKey = ffjtSendPollRequestExplanationParseMode
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendPollRequestExplanationEntities, kn) {
+						currentKey = ffjtSendPollRequestExplanationEntities
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'i':
+
+					if bytes.Equal(ffjKeySendPollRequestIsAnonymous, kn) {
+						currentKey = ffjtSendPollRequestIsAnonymous
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendPollRequestIsClosed, kn) {
+						currentKey = ffjtSendPollRequestIsClosed
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'o':
+
+					if bytes.Equal(ffjKeySendPollRequestOptions, kn) {
+						currentKey = ffjtSendPollRequestOptions
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendPollRequestOpenPeriod, kn) {
+						currentKey = ffjtSendPollRequestOpenPeriod
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'p':
+
+					if bytes.Equal(ffjKeySendPollRequestProtectContent, kn) {
+						currentKey = ffjtSendPollRequestProtectContent
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'q':
+
+					if bytes.Equal(ffjKeySendPollRequestQuestion, kn) {
+						currentKey = ffjtSendPollRequestQuestion
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'r':
+
+					if bytes.Equal(ffjKeySendPollRequestReplyToMessageID, kn) {
+						currentKey = ffjtSendPollRequestReplyToMessageID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendPollRequestReplyMarkup, kn) {
+						currentKey = ffjtSendPollRequestReplyMarkup
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 't':
+
+					if bytes.Equal(ffjKeySendPollRequestType, kn) {
+						currentKey = ffjtSendPollRequestType
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendPollRequestReplyMarkup, kn) {
+					currentKey = ffjtSendPollRequestReplyMarkup
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendPollRequestAllowSendingWithoutReply, kn) {
+					currentKey = ffjtSendPollRequestAllowSendingWithoutReply
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendPollRequestReplyToMessageID, kn) {
+					currentKey = ffjtSendPollRequestReplyToMessageID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendPollRequestProtectContent, kn) {
+					currentKey = ffjtSendPollRequestProtectContent
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendPollRequestDisableNotification, kn) {
+					currentKey = ffjtSendPollRequestDisableNotification
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendPollRequestIsClosed, kn) {
+					currentKey = ffjtSendPollRequestIsClosed
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendPollRequestCloseDate, kn) {
+					currentKey = ffjtSendPollRequestCloseDate
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendPollRequestOpenPeriod, kn) {
+					currentKey = ffjtSendPollRequestOpenPeriod
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendPollRequestExplanationEntities, kn) {
+					currentKey = ffjtSendPollRequestExplanationEntities
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendPollRequestExplanationParseMode, kn) {
+					currentKey = ffjtSendPollRequestExplanationParseMode
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendPollRequestExplanation, kn) {
+					currentKey = ffjtSendPollRequestExplanation
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendPollRequestCorrectOptionID, kn) {
+					currentKey = ffjtSendPollRequestCorrectOptionID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendPollRequestAllowsMultipleAnswers, kn) {
+					currentKey = ffjtSendPollRequestAllowsMultipleAnswers
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendPollRequestType, kn) {
+					currentKey = ffjtSendPollRequestType
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendPollRequestIsAnonymous, kn) {
+					currentKey = ffjtSendPollRequestIsAnonymous
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendPollRequestOptions, kn) {
+					currentKey = ffjtSendPollRequestOptions
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendPollRequestQuestion, kn) {
+					currentKey = ffjtSendPollRequestQuestion
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendPollRequestChatID, kn) {
+					currentKey = ffjtSendPollRequestChatID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtSendPollRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtSendPollRequestChatID:
+					goto handle_ChatID
+
+				case ffjtSendPollRequestQuestion:
+					goto handle_Question
+
+				case ffjtSendPollRequestOptions:
+					goto handle_Options
+
+				case ffjtSendPollRequestIsAnonymous:
+					goto handle_IsAnonymous
+
+				case ffjtSendPollRequestType:
+					goto handle_Type
+
+				case ffjtSendPollRequestAllowsMultipleAnswers:
+					goto handle_AllowsMultipleAnswers
+
+				case ffjtSendPollRequestCorrectOptionID:
+					goto handle_CorrectOptionID
+
+				case ffjtSendPollRequestExplanation:
+					goto handle_Explanation
+
+				case ffjtSendPollRequestExplanationParseMode:
+					goto handle_ExplanationParseMode
+
+				case ffjtSendPollRequestExplanationEntities:
+					goto handle_ExplanationEntities
+
+				case ffjtSendPollRequestOpenPeriod:
+					goto handle_OpenPeriod
+
+				case ffjtSendPollRequestCloseDate:
+					goto handle_CloseDate
+
+				case ffjtSendPollRequestIsClosed:
+					goto handle_IsClosed
+
+				case ffjtSendPollRequestDisableNotification:
+					goto handle_DisableNotification
+
+				case ffjtSendPollRequestProtectContent:
+					goto handle_ProtectContent
+
+				case ffjtSendPollRequestReplyToMessageID:
+					goto handle_ReplyToMessageID
+
+				case ffjtSendPollRequestAllowSendingWithoutReply:
+					goto handle_AllowSendingWithoutReply
+
+				case ffjtSendPollRequestReplyMarkup:
+					goto handle_ReplyMarkup
+
+				case ffjtSendPollRequestnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_ChatID:
+
+	/* handler: j.ChatID type=model.IntOrStr kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.IntOrStr kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ChatID)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Question:
+
+	/* handler: j.Question type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.Question = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Options:
+
+	/* handler: j.Options type=[]string kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for ", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.Options = nil
+		} else {
+
+			j.Options = []string{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJOptions string
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib.FFTok_right_brace {
+					break
+				}
+
+				if tok == fflib.FFTok_comma {
+					if wantVal == true {
+						// TODO(pquerna): this isn't an ideal error message, this handles
+						// things like [,,,] as an array value.
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJOptions type=string kind=string quoted=false*/
+
+				{
+
+					{
+						if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+							return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+						}
+					}
+
+					if tok == fflib.FFTok_null {
+
+					} else {
+
+						outBuf := fs.Output.Bytes()
+
+						tmpJOptions = string(string(outBuf))
+
+					}
+				}
+
+				j.Options = append(j.Options, tmpJOptions)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_IsAnonymous:
+
+	/* handler: j.IsAnonymous type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.IsAnonymous = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.IsAnonymous = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Type:
+
+	/* handler: j.Type type=model.PollTyper kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.PollTyper kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.Type)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_AllowsMultipleAnswers:
+
+	/* handler: j.AllowsMultipleAnswers type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.AllowsMultipleAnswers = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.AllowsMultipleAnswers = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_CorrectOptionID:
+
+	/* handler: j.CorrectOptionID type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.CorrectOptionID = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Explanation:
+
+	/* handler: j.Explanation type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.Explanation = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ExplanationParseMode:
+
+	/* handler: j.ExplanationParseMode type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.ExplanationParseMode = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ExplanationEntities:
+
+	/* handler: j.ExplanationEntities type=[]*model.MessageEntity kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for ", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.ExplanationEntities = nil
+		} else {
+
+			j.ExplanationEntities = []*MessageEntity{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJExplanationEntities *MessageEntity
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib.FFTok_right_brace {
+					break
+				}
+
+				if tok == fflib.FFTok_comma {
+					if wantVal == true {
+						// TODO(pquerna): this isn't an ideal error message, this handles
+						// things like [,,,] as an array value.
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJExplanationEntities type=*model.MessageEntity kind=ptr quoted=false*/
+
+				{
+					if tok == fflib.FFTok_null {
+
+						tmpJExplanationEntities = nil
+
+					} else {
+
+						if tmpJExplanationEntities == nil {
+							tmpJExplanationEntities = new(MessageEntity)
+						}
+
+						err = tmpJExplanationEntities.UnmarshalJSONFFLexer(fs, fflib.FFParse_want_key)
+						if err != nil {
+							return err
+						}
+					}
+					state = fflib.FFParse_after_value
+				}
+
+				j.ExplanationEntities = append(j.ExplanationEntities, tmpJExplanationEntities)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_OpenPeriod:
+
+	/* handler: j.OpenPeriod type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.OpenPeriod = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_CloseDate:
+
+	/* handler: j.CloseDate type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.CloseDate = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_IsClosed:
+
+	/* handler: j.IsClosed type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.IsClosed = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.IsClosed = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_DisableNotification:
+
+	/* handler: j.DisableNotification type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.DisableNotification = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.DisableNotification = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ProtectContent:
+
+	/* handler: j.ProtectContent type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.ProtectContent = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.ProtectContent = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ReplyToMessageID:
+
+	/* handler: j.ReplyToMessageID type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.ReplyToMessageID = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_AllowSendingWithoutReply:
+
+	/* handler: j.AllowSendingWithoutReply type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.AllowSendingWithoutReply = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.AllowSendingWithoutReply = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ReplyMarkup:
+
+	/* handler: j.ReplyMarkup type=model.ReplyMarkup kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.ReplyMarkup kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ReplyMarkup)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+wantedvalue:
+	return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+wrongtokenerror:
+	return fs.WrapErr(fmt.Errorf("ffjson: wanted token: %v, but got token: %v output=%s", wantedTok, tok, fs.Output.String()))
+tokerror:
+	if fs.BigError != nil {
+		return fs.WrapErr(fs.BigError)
+	}
+	err = fs.Error.ToError()
+	if err != nil {
+		return fs.WrapErr(err)
+	}
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
+
+// MarshalJSON marshal bytes to json - template
 func (j *UpdateMessageRequest) MarshalJSON() ([]byte, error) {
 	var buf fflib.Buffer
 	if j == nil {

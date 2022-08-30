@@ -56,12 +56,23 @@ type SendChatActionRequest struct {
 	Action ChatActioner `json:"action"`
 }
 
+type MyCommands struct {
+	Scope        BotCommandScope `json:"scope,omitempty"`
+	LanguageCode string          `json:"language_code,omitempty"`
+}
+
+type SetMyCommands struct {
+	Commands     []*BotCommand   `json:"commands"`
+	Scope        BotCommandScope `json:"scope,omitempty"`
+	LanguageCode string          `json:"language_code,omitempty"`
+}
+
 type SendPollRequest struct {
 	ChatID                   IntOrStr         `json:"chat_id"`
 	Question                 string           `json:"question"`
 	Options                  []string         `json:"options"`
 	IsAnonymous              bool             `json:"is_anonymous,omitempty"`
-	Type                     string           `json:"type,omitempty"`
+	Type                     PollTyper        `json:"type,omitempty"`
 	AllowsMultipleAnswers    bool             `json:"allows_multiple_answers,omitempty"`
 	CorrectOptionID          int              `json:"correct_option_id,omitempty"`
 	Explanation              string           `json:"explanation,omitempty"`
@@ -219,4 +230,73 @@ type InlineQuery struct {
 	Offset   string    `json:"offset"`
 	ChatType string    `json:"chat_type,omitempty"`
 	Location *Location `json:"location,omitempty"`
+}
+
+type BotCommand struct {
+	Command     string `json:"command"`
+	Description string `json:"description"`
+}
+
+type BotCommandScope interface {
+	getType() string
+}
+
+type BotCommandScopeDefault struct {
+	Type string `json:"type"`
+}
+
+func (b *BotCommandScopeDefault) getType() string {
+	return "default"
+}
+
+type BotCommandScopeAllPrivateChats struct {
+	Type string `json:"type"`
+}
+
+func (b *BotCommandScopeAllPrivateChats) getType() string {
+	return "all_private_chats"
+}
+
+type BotCommandScopeAllGroupChats struct {
+	Type string `json:"type"`
+}
+
+func (b *BotCommandScopeAllGroupChats) getType() string {
+	return "all_group_chats"
+}
+
+type BotCommandScopeAllChatAdministrators struct {
+	Type string `json:"type"`
+}
+
+func (b *BotCommandScopeAllChatAdministrators) getType() string {
+	return "all_chat_administrators"
+}
+
+type BotCommandScopeChat struct {
+	Type   string   `json:"type"`
+	ChatID IntOrStr `json:"chat_id"`
+}
+
+func (b *BotCommandScopeChat) getType() string {
+	return "chat"
+}
+
+type BotCommandScopeChatAdministrators struct {
+	Type   string   `json:"type"`
+	ChatID IntOrStr `json:"chat_id"`
+}
+
+func (b *BotCommandScopeChatAdministrators) getType() string {
+	return "chat_administrators"
+}
+
+type BotCommandScopeChatMember struct {
+	Type   string   `json:"type"`
+	ChatID IntOrStr `json:"chat_id"`
+	UserID int64    `json:"user_id"`
+}
+
+func (b *BotCommandScopeChatMember) getType() string {
+	return "chat_member"
 }

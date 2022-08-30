@@ -7,14 +7,17 @@ const (
 	MethodGetUpdates = "getUpdates"
 	MethodGetFile    = "getFile"
 
-	MethodSendMessage    = "sendMessage"
-	MethodSendPhoto      = "sendPhoto"
-	MethodSendDocument   = "sendDocument"
-	MethodSendAnimation  = "sendAnimation"
-	MethodSendLocation   = "sendLocation"
-	MethodSendDice       = "sendDice"
-	MethodSendChatAction = "sendChatAction"
-	MethodSendPoll       = "sendPoll"
+	MethodSendMessage      = "sendMessage"
+	MethodSendPhoto        = "sendPhoto"
+	MethodSendDocument     = "sendDocument"
+	MethodSendAnimation    = "sendAnimation"
+	MethodSendLocation     = "sendLocation"
+	MethodSendDice         = "sendDice"
+	MethodSendChatAction   = "sendChatAction"
+	MethodSendPoll         = "sendPoll"
+	MethodSetMyCommands    = "setMyCommands"
+	MethodDeleteMyCommands = "deleteMyCommands"
+	MethodGetMyCommands    = "getMyCommands"
 )
 
 const (
@@ -25,11 +28,11 @@ const (
 
 type ChatActioner interface {
 	fmt.Stringer
-	privateUnimplemented()
+	chatActionerPrivate()
 }
 type chatAction string
 
-func (ca chatAction) privateUnimplemented() {
+func (ca chatAction) chatActionerPrivate() {
 }
 
 func (ca chatAction) String() string {
@@ -45,4 +48,22 @@ var (
 	ActionUploadVideo     ChatActioner = chatAction("upload_video")
 	ActionUploadVideoNote ChatActioner = chatAction("upload_video_note")
 	ActionUploadVoice     ChatActioner = chatAction("upload_voice")
+)
+
+type PollTyper interface {
+	fmt.Stringer
+	pollTyperPrivate()
+}
+type pollType string
+
+func (ca pollType) pollTyperPrivate() {
+}
+
+func (ca pollType) String() string {
+	return string(ca)
+}
+
+var (
+	PollTypeQuiz    PollTyper = pollType("quiz")
+	PollTypeRegular PollTyper = pollType("regular")
 )

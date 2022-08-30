@@ -1,6 +1,10 @@
 package telega
 
 import (
+	"fmt"
+	"strings"
+	"unicode/utf8"
+
 	"github.com/DmytroTHR/telegabot/pkg/helpers"
 	"github.com/DmytroTHR/telegabot/pkg/model"
 )
@@ -169,4 +173,46 @@ func NewChatActionRequest(chatID any, action model.ChatActioner) (*model.SendCha
 		ChatID: id,
 		Action: action,
 	}, nil
+}
+
+func NewSetMyCommands(commands map[string]string) (*model.SetMyCommands, error) {
+	result := &model.SetMyCommands{}
+	for com, des := range commands {
+		botCom, err := NewBotCommand(com, des)
+		if err != nil {
+			return nil, helpers.WrapError("set commands", err)
+		}
+		result.Commands = append(result.Commands, botCom)
+	}
+	result.Scope = &model.BotCommandScopeDefault{Type: "default"}
+
+	return result, nil
+}
+
+func NewBotCommand(command, description string) (*model.BotCommand, error) {
+	if !botCommandVerified(command) {
+		return nil, fmt.Errorf("%s cannot be a bot command (1-32 chars, lowercase, digits, _ )", command)
+	}
+	if len(description) == 0 || utf8.RuneCountInString(description) > 256 {
+		return nil, fmt.Errorf("bot command description must be 1-256 chars long")
+	}
+
+	return &model.BotCommand{
+		Command:     command,
+		Description: description,
+	}, nil
+}
+
+func botCommandVerified(command string) bool {
+	allowedSymbols := "abcdefjhijklmnopqrstuvwxyz1234567890_"
+	if len(command) == 0 || len(command) > 32 {
+		return false
+	}
+	for _, sym := range command {
+		if !strings.ContainsRune(allowedSymbols, sym) {
+			return false
+		}
+	}
+
+	return true
 }
