@@ -163,7 +163,7 @@ func NewAnimationRequestWithCaption(chatID any, pathToFile, caption string) (*mo
 	return simpleRequest, nil
 }
 
-func NewChatActionRequest(chatID any, action model.ChatActioner) (*model.SendChatActionRequest, error) {
+func NewChatActionRequest(chatID any, action model.ChatAction) (*model.SendChatActionRequest, error) {
 	id, err := ChatIDFrom(chatID)
 	if err != nil {
 		return nil, err
@@ -175,6 +175,14 @@ func NewChatActionRequest(chatID any, action model.ChatActioner) (*model.SendCha
 	}, nil
 }
 
+func NewBotCommandScope(scope model.CommandScope) *model.BotCommandScope {
+	return &model.BotCommandScope{Type: scope}
+}
+
+func NewMyCommands(scope model.CommandScope) *model.MyCommands {
+	return &model.MyCommands{Scope: NewBotCommandScope(scope)}
+}
+
 func NewSetMyCommands(commands map[string]string) (*model.SetMyCommands, error) {
 	result := &model.SetMyCommands{}
 	for com, des := range commands {
@@ -184,7 +192,7 @@ func NewSetMyCommands(commands map[string]string) (*model.SetMyCommands, error) 
 		}
 		result.Commands = append(result.Commands, botCom)
 	}
-	result.Scope = &model.BotCommandScopeDefault{Type: "default"}
+	result.Scope = NewBotCommandScope(model.BotCommandScopeDefault)
 
 	return result, nil
 }

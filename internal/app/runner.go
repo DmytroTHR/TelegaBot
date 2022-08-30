@@ -2,9 +2,11 @@ package app
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/DmytroTHR/telegabot/pkg/helpers"
+	"github.com/DmytroTHR/telegabot/pkg/model"
 	"github.com/DmytroTHR/telegabot/pkg/telega"
 )
 
@@ -142,40 +144,40 @@ func (app *Application) Run() error {
 		//}
 		//_, err = bot.SendPoll(ctx, msgPoll)
 
-		////MANIPULATING WITH COMMANDS
-		//commands := map[string]string{
-		//	"hi":   "say hi",
-		//	"bye":  "say bye-bye",
-		//	"help": "show help",
-		//}
-		//commandSetter, err := telega.NewSetMyCommands(commands)
-		//if err != nil {
-		//	return err
-		//}
-		//_, err = bot.SetMyCommands(ctx, commandSetter)
-		//if err != nil {
-		//	return err
-		//}
-		//log.Println("commands were set")
-		//comResult, err := bot.GetMyCommands(ctx, &model.MyCommands{Scope: commandSetter.Scope})
-		//if err != nil {
-		//	return err
-		//}
-		//for _, v := range comResult {
-		//	log.Println(*v)
-		//}
-		//_, err = bot.DeleteMyCommands(ctx, &model.MyCommands{Scope: commandSetter.Scope})
-		//if err != nil {
-		//	return err
-		//}
-		//log.Println("commands were deleted")
-		//comResult, err = bot.GetMyCommands(ctx, &model.MyCommands{Scope: commandSetter.Scope})
-		//if err != nil {
-		//	return err
-		//}
-		//if len(comResult) > 0 {
-		//	return errors.New("not all commands were deleted")
-		//}
+		//MANIPULATING WITH COMMANDS
+		commands := map[string]string{
+			"hi":   "say hi",
+			"bye":  "say bye-bye",
+			"help": "show help",
+		}
+		commandSetter, err := telega.NewSetMyCommands(commands)
+		if err != nil {
+			return err
+		}
+		_, err = bot.SetMyCommands(ctx, commandSetter)
+		if err != nil {
+			return err
+		}
+		log.Println("commands were set")
+		comResult, err := bot.GetMyCommands(ctx, telega.NewMyCommands(model.BotCommandScopeDefault))
+		if err != nil {
+			return err
+		}
+		for _, v := range comResult {
+			log.Println(*v)
+		}
+		_, err = bot.DeleteMyCommands(ctx, telega.NewMyCommands(model.BotCommandScopeDefault))
+		if err != nil {
+			return err
+		}
+		log.Println("commands were deleted")
+		comResult, err = bot.GetMyCommands(ctx, telega.NewMyCommands(model.BotCommandScopeDefault))
+		if err != nil {
+			return err
+		}
+		if len(comResult) > 0 {
+			return errors.New("not all commands were deleted")
+		}
 
 		if err != nil {
 			return err

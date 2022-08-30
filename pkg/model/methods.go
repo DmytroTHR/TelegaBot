@@ -1,7 +1,5 @@
 package model
 
-import "fmt"
-
 const (
 	MethodGetMe      = "getMe"
 	MethodGetUpdates = "getUpdates"
@@ -26,44 +24,53 @@ const (
 	DiceOneToSixtyFour
 )
 
-type ChatActioner interface {
-	fmt.Stringer
-	chatActionerPrivate()
+type ChatAction interface {
+	chatActionPrivate()
 }
+
 type chatAction string
 
-func (ca chatAction) chatActionerPrivate() {
-}
-
-func (ca chatAction) String() string {
-	return string(ca)
+func (ca chatAction) chatActionPrivate() {
 }
 
 var (
-	ActionTyping          ChatActioner = chatAction("typing")
-	ActionFindLocation    ChatActioner = chatAction("find_location")
-	ActionChooseSticker   ChatActioner = chatAction("choose_sticker")
-	ActionUploadPhoto     ChatActioner = chatAction("upload_photo")
-	ActionUploadDocument  ChatActioner = chatAction("upload_document")
-	ActionUploadVideo     ChatActioner = chatAction("upload_video")
-	ActionUploadVideoNote ChatActioner = chatAction("upload_video_note")
-	ActionUploadVoice     ChatActioner = chatAction("upload_voice")
+	ActionTyping          ChatAction = chatAction("typing")
+	ActionFindLocation    ChatAction = chatAction("find_location")
+	ActionChooseSticker   ChatAction = chatAction("choose_sticker")
+	ActionUploadPhoto     ChatAction = chatAction("upload_photo")
+	ActionUploadDocument  ChatAction = chatAction("upload_document")
+	ActionUploadVideo     ChatAction = chatAction("upload_video")
+	ActionUploadVideoNote ChatAction = chatAction("upload_video_note")
+	ActionUploadVoice     ChatAction = chatAction("upload_voice")
 )
 
-type PollTyper interface {
-	fmt.Stringer
-	pollTyperPrivate()
+type PollType interface {
+	pollTypePrivate()
 }
 type pollType string
 
-func (ca pollType) pollTyperPrivate() {
-}
-
-func (ca pollType) String() string {
-	return string(ca)
+func (ca pollType) pollTypePrivate() {
 }
 
 var (
-	PollTypeQuiz    PollTyper = pollType("quiz")
-	PollTypeRegular PollTyper = pollType("regular")
+	PollTypeQuiz    PollType = pollType("quiz")
+	PollTypeRegular PollType = pollType("regular")
+)
+
+type CommandScope interface {
+	commandScopePrivate()
+}
+type commandScope string
+
+func (cs commandScope) commandScopePrivate() {
+}
+
+var (
+	BotCommandScopeDefault               CommandScope = commandScope("default")
+	BotCommandScopeAllPrivateChats       CommandScope = commandScope("all_private_chats")
+	BotCommandScopeAllGroupChats         CommandScope = commandScope("all_group_chats")
+	BotCommandScopeAllChatAdministrators CommandScope = commandScope("all_chat_administrators")
+	BotCommandScopeChat                  CommandScope = commandScope("chat")
+	BotCommandScopeChatAdministrators    CommandScope = commandScope("chat_administrators")
+	BotCommandScopeChatMember            CommandScope = commandScope("chat_member")
 )
