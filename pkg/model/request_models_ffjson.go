@@ -5072,6 +5072,696 @@ done:
 }
 
 // MarshalJSON marshal bytes to json - template
+func (j *SendContactRequest) MarshalJSON() ([]byte, error) {
+	var buf fflib.Buffer
+	if j == nil {
+		buf.WriteString("null")
+		return buf.Bytes(), nil
+	}
+	err := j.MarshalJSONBuf(&buf)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// MarshalJSONBuf marshal buff to json - template
+func (j *SendContactRequest) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{ "chat_id":`)
+	/* Interface types must use runtime reflection. type=model.IntOrStr kind=interface */
+	err = buf.Encode(j.ChatID)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"phone_number":`)
+	fflib.WriteJsonString(buf, string(j.PhoneNumber))
+	buf.WriteString(`,"first_name":`)
+	fflib.WriteJsonString(buf, string(j.FirstName))
+	buf.WriteByte(',')
+	if len(j.LastName) != 0 {
+		buf.WriteString(`"last_name":`)
+		fflib.WriteJsonString(buf, string(j.LastName))
+		buf.WriteByte(',')
+	}
+	if len(j.VCard) != 0 {
+		buf.WriteString(`"vcard":`)
+		fflib.WriteJsonString(buf, string(j.VCard))
+		buf.WriteByte(',')
+	}
+	if j.DisableNotification != false {
+		if j.DisableNotification {
+			buf.WriteString(`"disable_notification":true`)
+		} else {
+			buf.WriteString(`"disable_notification":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ProtectContent != false {
+		if j.ProtectContent {
+			buf.WriteString(`"protect_content":true`)
+		} else {
+			buf.WriteString(`"protect_content":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ReplyToMessageID != 0 {
+		buf.WriteString(`"reply_to_message_id":`)
+		fflib.FormatBits2(buf, uint64(j.ReplyToMessageID), 10, j.ReplyToMessageID < 0)
+		buf.WriteByte(',')
+	}
+	if j.AllowSendingWithoutReply != false {
+		if j.AllowSendingWithoutReply {
+			buf.WriteString(`"allow_sending_without_reply":true`)
+		} else {
+			buf.WriteString(`"allow_sending_without_reply":false`)
+		}
+		buf.WriteByte(',')
+	}
+	if j.ReplyMarkup != nil {
+		if true {
+			buf.WriteString(`"reply_markup":`)
+			/* Interface types must use runtime reflection. type=model.ReplyMarkup kind=interface */
+			err = buf.Encode(j.ReplyMarkup)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtSendContactRequestbase = iota
+	ffjtSendContactRequestnosuchkey
+
+	ffjtSendContactRequestChatID
+
+	ffjtSendContactRequestPhoneNumber
+
+	ffjtSendContactRequestFirstName
+
+	ffjtSendContactRequestLastName
+
+	ffjtSendContactRequestVCard
+
+	ffjtSendContactRequestDisableNotification
+
+	ffjtSendContactRequestProtectContent
+
+	ffjtSendContactRequestReplyToMessageID
+
+	ffjtSendContactRequestAllowSendingWithoutReply
+
+	ffjtSendContactRequestReplyMarkup
+)
+
+var ffjKeySendContactRequestChatID = []byte("chat_id")
+
+var ffjKeySendContactRequestPhoneNumber = []byte("phone_number")
+
+var ffjKeySendContactRequestFirstName = []byte("first_name")
+
+var ffjKeySendContactRequestLastName = []byte("last_name")
+
+var ffjKeySendContactRequestVCard = []byte("vcard")
+
+var ffjKeySendContactRequestDisableNotification = []byte("disable_notification")
+
+var ffjKeySendContactRequestProtectContent = []byte("protect_content")
+
+var ffjKeySendContactRequestReplyToMessageID = []byte("reply_to_message_id")
+
+var ffjKeySendContactRequestAllowSendingWithoutReply = []byte("allow_sending_without_reply")
+
+var ffjKeySendContactRequestReplyMarkup = []byte("reply_markup")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *SendContactRequest) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *SendContactRequest) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtSendContactRequestbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_left_bracket {
+				wantedTok = fflib.FFTok_left_bracket
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_key
+			continue
+
+		case fflib.FFParse_after_value:
+			if tok == fflib.FFTok_comma {
+				state = fflib.FFParse_want_key
+			} else if tok == fflib.FFTok_right_bracket {
+				goto done
+			} else {
+				wantedTok = fflib.FFTok_comma
+				goto wrongtokenerror
+			}
+
+		case fflib.FFParse_want_key:
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtSendContactRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeySendContactRequestAllowSendingWithoutReply, kn) {
+						currentKey = ffjtSendContactRequestAllowSendingWithoutReply
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'c':
+
+					if bytes.Equal(ffjKeySendContactRequestChatID, kn) {
+						currentKey = ffjtSendContactRequestChatID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'd':
+
+					if bytes.Equal(ffjKeySendContactRequestDisableNotification, kn) {
+						currentKey = ffjtSendContactRequestDisableNotification
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'f':
+
+					if bytes.Equal(ffjKeySendContactRequestFirstName, kn) {
+						currentKey = ffjtSendContactRequestFirstName
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'l':
+
+					if bytes.Equal(ffjKeySendContactRequestLastName, kn) {
+						currentKey = ffjtSendContactRequestLastName
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'p':
+
+					if bytes.Equal(ffjKeySendContactRequestPhoneNumber, kn) {
+						currentKey = ffjtSendContactRequestPhoneNumber
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendContactRequestProtectContent, kn) {
+						currentKey = ffjtSendContactRequestProtectContent
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'r':
+
+					if bytes.Equal(ffjKeySendContactRequestReplyToMessageID, kn) {
+						currentKey = ffjtSendContactRequestReplyToMessageID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeySendContactRequestReplyMarkup, kn) {
+						currentKey = ffjtSendContactRequestReplyMarkup
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'v':
+
+					if bytes.Equal(ffjKeySendContactRequestVCard, kn) {
+						currentKey = ffjtSendContactRequestVCard
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendContactRequestReplyMarkup, kn) {
+					currentKey = ffjtSendContactRequestReplyMarkup
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendContactRequestAllowSendingWithoutReply, kn) {
+					currentKey = ffjtSendContactRequestAllowSendingWithoutReply
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendContactRequestReplyToMessageID, kn) {
+					currentKey = ffjtSendContactRequestReplyToMessageID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendContactRequestProtectContent, kn) {
+					currentKey = ffjtSendContactRequestProtectContent
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendContactRequestDisableNotification, kn) {
+					currentKey = ffjtSendContactRequestDisableNotification
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySendContactRequestVCard, kn) {
+					currentKey = ffjtSendContactRequestVCard
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendContactRequestLastName, kn) {
+					currentKey = ffjtSendContactRequestLastName
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySendContactRequestFirstName, kn) {
+					currentKey = ffjtSendContactRequestFirstName
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendContactRequestPhoneNumber, kn) {
+					currentKey = ffjtSendContactRequestPhoneNumber
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeySendContactRequestChatID, kn) {
+					currentKey = ffjtSendContactRequestChatID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtSendContactRequestnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtSendContactRequestChatID:
+					goto handle_ChatID
+
+				case ffjtSendContactRequestPhoneNumber:
+					goto handle_PhoneNumber
+
+				case ffjtSendContactRequestFirstName:
+					goto handle_FirstName
+
+				case ffjtSendContactRequestLastName:
+					goto handle_LastName
+
+				case ffjtSendContactRequestVCard:
+					goto handle_VCard
+
+				case ffjtSendContactRequestDisableNotification:
+					goto handle_DisableNotification
+
+				case ffjtSendContactRequestProtectContent:
+					goto handle_ProtectContent
+
+				case ffjtSendContactRequestReplyToMessageID:
+					goto handle_ReplyToMessageID
+
+				case ffjtSendContactRequestAllowSendingWithoutReply:
+					goto handle_AllowSendingWithoutReply
+
+				case ffjtSendContactRequestReplyMarkup:
+					goto handle_ReplyMarkup
+
+				case ffjtSendContactRequestnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_ChatID:
+
+	/* handler: j.ChatID type=model.IntOrStr kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.IntOrStr kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ChatID)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_PhoneNumber:
+
+	/* handler: j.PhoneNumber type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.PhoneNumber = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_FirstName:
+
+	/* handler: j.FirstName type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.FirstName = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_LastName:
+
+	/* handler: j.LastName type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.LastName = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_VCard:
+
+	/* handler: j.VCard type=string kind=string quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_string && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for string", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			outBuf := fs.Output.Bytes()
+
+			j.VCard = string(string(outBuf))
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_DisableNotification:
+
+	/* handler: j.DisableNotification type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.DisableNotification = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.DisableNotification = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ProtectContent:
+
+	/* handler: j.ProtectContent type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.ProtectContent = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.ProtectContent = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ReplyToMessageID:
+
+	/* handler: j.ReplyToMessageID type=int kind=int quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			j.ReplyToMessageID = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_AllowSendingWithoutReply:
+
+	/* handler: j.AllowSendingWithoutReply type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.AllowSendingWithoutReply = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.AllowSendingWithoutReply = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ReplyMarkup:
+
+	/* handler: j.ReplyMarkup type=model.ReplyMarkup kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=model.ReplyMarkup kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.ReplyMarkup)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+wantedvalue:
+	return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+wrongtokenerror:
+	return fs.WrapErr(fmt.Errorf("ffjson: wanted token: %v, but got token: %v output=%s", wantedTok, tok, fs.Output.String()))
+tokerror:
+	if fs.BigError != nil {
+		return fs.WrapErr(fs.BigError)
+	}
+	err = fs.Error.ToError()
+	if err != nil {
+		return fs.WrapErr(err)
+	}
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
+
+// MarshalJSON marshal bytes to json - template
 func (j *SendDiceRequest) MarshalJSON() ([]byte, error) {
 	var buf fflib.Buffer
 	if j == nil {

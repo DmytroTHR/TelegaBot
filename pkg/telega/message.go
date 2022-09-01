@@ -130,57 +130,15 @@ func (b *Bot) SendPoll(ctx context.Context, pollRequest *model.SendPollRequest) 
 	return b.messageResultFor(ctx, model.MethodSendPoll, bytes.NewReader(body), helpers.DefaultHeader())
 }
 
-func (b *Bot) sendData(ctx context.Context, request model.DataSender, method string) (*model.Message, error) {
-	methodStr := fmt.Sprintf("method <%s>", method)
+func (b *Bot) SendContact(ctx context.Context, message *model.SendContactRequest) (*model.Message, error) {
+	methodStr := fmt.Sprintf("method <%s>", model.MethodSendContact)
 
-	body, err := ffjson.Marshal(request)
+	body, err := ffjson.Marshal(message)
 	if err != nil {
 		return nil, helpers.WrapError(methodStr, helpers.WrapError("marshal request", err))
 	}
-	opts := helpers.UnmarshalToKeyValueString(body)
-	if len(opts) == 0 {
-		return nil, helpers.WrapError(methodStr, fmt.Errorf("unmarshal to map string"))
-	}
-	files := map[string]string{}
 
-	switch method {
-	case model.MethodSendDocument:
-		delete(opts, "document")
-		delete(opts, "thumb")
-		request, ok := request.(*model.SendDocumentRequest)
-		if !ok {
-			return nil, helpers.WrapError(methodStr, fmt.Errorf(""))
-		}
-		files["document"] = request.Document
-		files["thumb"] = request.Thumb
-	case model.MethodSendPhoto:
-		delete(opts, "photo")
-		request, ok := request.(*model.SendPhotoRequest)
-		if !ok {
-			return nil, helpers.WrapError(methodStr, fmt.Errorf(""))
-		}
-		files["photo"] = request.Photo
-	case model.MethodSendAnimation:
-		delete(opts, "animation")
-		request, ok := request.(*model.SendAnimationRequest)
-		if !ok {
-			return nil, helpers.WrapError(methodStr, fmt.Errorf(""))
-		}
-		files["animation"] = request.Animation
-	default:
-		return nil, helpers.WrapError(methodStr, fmt.Errorf("send data with the method"))
-	}
-
-	preparedData, contentType, err := helpers.MultipartDataUpload(files, opts)
-	if err != nil {
-		return nil, helpers.WrapError(methodStr, err)
-	}
-
-	header := map[string]string{
-		"Content-Type": contentType,
-	}
-
-	return b.messageResultFor(ctx, method, preparedData, header)
+	return b.messageResultFor(ctx, model.MethodSendContact, bytes.NewReader(body), helpers.DefaultHeader())
 }
 
 func (b *Bot) messageResultFor(ctx context.Context, method string,

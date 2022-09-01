@@ -13,6 +13,7 @@ const (
 	MethodSendDice         = "sendDice"
 	MethodSendChatAction   = "sendChatAction"
 	MethodSendPoll         = "sendPoll"
+	MethodSendContact      = "sendContact"
 	MethodSetMyCommands    = "setMyCommands"
 	MethodDeleteMyCommands = "deleteMyCommands"
 	MethodGetMyCommands    = "getMyCommands"

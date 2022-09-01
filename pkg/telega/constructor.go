@@ -97,6 +97,20 @@ func NewPollRequest(chatID any, question string, options []string) (*model.SendP
 	}, nil
 }
 
+func NewContactRequest(chatID any, phoneNumber, firstName, lastName string) (*model.SendContactRequest, error) {
+	id, err := ChatIDFrom(chatID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.SendContactRequest{
+		ChatID:      id,
+		PhoneNumber: phoneNumber,
+		FirstName:   firstName,
+		LastName:    lastName,
+	}, nil
+}
+
 func NewPhotoRequest(chatID any, pathToFile string) (*model.SendPhotoRequest, error) {
 	id, err := ChatIDFrom(chatID)
 	if err != nil {

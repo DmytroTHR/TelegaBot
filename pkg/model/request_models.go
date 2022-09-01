@@ -88,6 +88,19 @@ type SendPollRequest struct {
 	ReplyMarkup              *ReplyMarkup     `json:"reply_markup,omitempty"`
 }
 
+type SendContactRequest struct {
+	ChatID                   IntOrStr     `json:"chat_id"`
+	PhoneNumber              string       `json:"phone_number"`
+	FirstName                string       `json:"first_name"`
+	LastName                 string       `json:"last_name,omitempty"`
+	VCard                    string       `json:"vcard,omitempty"`
+	DisableNotification      bool         `json:"disable_notification,omitempty"`
+	ProtectContent           bool         `json:"protect_content,omitempty"`
+	ReplyToMessageID         int          `json:"reply_to_message_id,omitempty"`
+	AllowSendingWithoutReply bool         `json:"allow_sending_without_reply,omitempty"`
+	ReplyMarkup              *ReplyMarkup `json:"reply_markup,omitempty"`
+}
+
 type DataSender interface {
 	dataField() string
 }
